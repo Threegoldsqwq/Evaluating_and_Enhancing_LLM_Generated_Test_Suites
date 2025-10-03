@@ -48,3 +48,6 @@ out = {
     "passed": result.testsRun - len(result.failures) - len(result.errors),
 }
 print(json.dumps(out))
+
+if result.failures or result.errors:
+    sys.exit(1)
