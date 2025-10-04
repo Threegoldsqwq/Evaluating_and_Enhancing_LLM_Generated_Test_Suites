@@ -1,4 +1,4 @@
-def count_n_digit_start_end_with_1(n: int) -> int:
+def starts_one_ends(n: int) -> int:
     """
     Given a positive integer n, return the count of the numbers of n-digit
     positive integers that start or end with 1.

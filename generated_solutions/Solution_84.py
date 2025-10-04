@@ -1,4 +1,4 @@
-def total_sum_binary(N: int) -> str:
+def solve(N: int) -> str:
     """
     Given a positive integer N, return the total sum of its digits in binary.
 

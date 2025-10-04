@@ -47,3 +47,29 @@ class TestGetOddCollatz(unittest.TestCase):
         # Test an even number that quickly becomes odd.
         # Collatz sequence for 4 is [4, 2, 1], odd numbers: [1]
         self.assertEqual(get_odd_collatz(4), [1])
+    def test_n_is_one(self):
+            # Tests the edge case where n is 1, which immediately triggers the break condition.
+            self.assertEqual(get_odd_collatz(1), [1])
+
+    def test_starting_with_even_number(self):
+            # Tests a path starting with an even number, ensuring the even branch is taken first
+            # before any odd numbers (other than 1) are encountered.
+            # Collatz sequence for 6: [6, 3, 10, 5, 16, 8, 4, 2, 1]
+            self.assertEqual(get_odd_collatz(6), [1, 3, 5])
+
+    def test_another_odd_number_sequence(self):
+            # Tests another simple odd starting number to ensure the odd branch
+            # (3*n+1) is correctly handled and all relevant odd numbers are captured.
+            # Collatz sequence for 3: [3, 10, 5, 16, 8, 4, 2, 1]
+            self.assertEqual(get_odd_collatz(3), [1, 3, 5])
+
+    def test_long_sequence_multiple_odds(self):
+            # Tests a number known to produce a long Collatz sequence with many odd numbers,
+            # ensuring the loop, set for uniqueness, and sorting work correctly for a complex case.
+            # Collatz sequence for 27 includes many intermediate odd numbers.
+            expected_odds_27 = [
+                1, 5, 23, 27, 31, 35, 41, 47, 53, 61, 71, 91, 103, 107, 121, 137, 
+                155, 161, 167, 175, 233, 251, 263, 283, 319, 325, 377, 395, 425, 
+                433, 445, 479, 577, 593, 719, 911, 1079, 1367, 1619, 2051, 2429, 3077
+            ]
+            self.assertEqual(get_odd_collatz(27), expected_odds_27)

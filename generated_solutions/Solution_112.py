@@ -37,18 +37,18 @@ def process_and_check_palindrome(s: str, c: str) -> tuple[str, bool]:
 
 # Example Test Cases:
 # For s = "abcde", c = "ae", the result should be ('bcd',False)
-print(f"s='abcde', c='ae' -> {process_and_check_palindrome('abcde', 'ae')}") # Expected: ('bcd', False)
+# print(f"s='abcde', c='ae' -> {process_and_check_palindrome('abcde', 'ae')}") # Expected: ('bcd', False)
 
-# For s = "abcdef", c = "b"  the result should be ('acdef',False)
-print(f"s='abcdef', c='b' -> {process_and_check_palindrome('abcdef', 'b')}") # Expected: ('acdef', False)
+# # For s = "abcdef", c = "b"  the result should be ('acdef',False)
+# print(f"s='abcdef', c='b' -> {process_and_check_palindrome('abcdef', 'b')}") # Expected: ('acdef', False)
 
-# For s = "abcdedcba", c = "ab", the result should be ('cdedc',True)
-print(f"s='abcdedcba', c='ab' -> {process_and_check_palindrome('abcdedcba', 'ab')}") # Expected: ('cdedc', True)
+# # For s = "abcdedcba", c = "ab", the result should be ('cdedc',True)
+# print(f"s='abcdedcba', c='ab' -> {process_and_check_palindrome('abcdedcba', 'ab')}") # Expected: ('cdedc', True)
 
-# Additional test cases:
-print(f"s='racecar', c='c' -> {process_and_check_palindrome('racecar', 'c')}") # Expected: ('raecar', False)
-print(f"s='madam', c='' -> {process_and_check_palindrome('madam', '')}") # Expected: ('madam', True)
-print(f"s='hello', c='l' -> {process_and_check_palindrome('hello', 'l')}") # Expected: ('heo', False)
-print(f"s='a', c='a' -> {process_and_check_palindrome('a', 'a')}")       # Expected: ('', True)
-print(f"s='a', c='b' -> {process_and_check_palindrome('a', 'b')}")       # Expected: ('a', True)
-print(f"s='', c='xyz' -> {process_and_check_palindrome('', 'xyz')}")     # Expected: ('', True)
+# # Additional test cases:
+# print(f"s='racecar', c='c' -> {process_and_check_palindrome('racecar', 'c')}") # Expected: ('raecar', False)
+# print(f"s='madam', c='' -> {process_and_check_palindrome('madam', '')}") # Expected: ('madam', True)
+# print(f"s='hello', c='l' -> {process_and_check_palindrome('hello', 'l')}") # Expected: ('heo', False)
+# print(f"s='a', c='a' -> {process_and_check_palindrome('a', 'a')}")       # Expected: ('', True)
+# print(f"s='a', c='b' -> {process_and_check_palindrome('a', 'b')}")       # Expected: ('a', True)
+# print(f"s='', c='xyz' -> {process_and_check_palindrome('', 'xyz')}")     # Expected: ('', True)

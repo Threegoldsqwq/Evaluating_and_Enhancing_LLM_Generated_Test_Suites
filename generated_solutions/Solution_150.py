@@ -63,9 +63,9 @@ def x_or_y(n, x, y):
         return y
 
 # --- Examples ---
-print(f"x_or_y(7, 34, 12) == {x_or_y(7, 34, 12)}") # Expected: 34 (7 is prime)
-print(f"x_or_y(15, 8, 5) == {x_or_y(15, 8, 5)}") # Expected: 5 (15 is not prime)
-print(f"x_or_y(2, 100, 200) == {x_or_y(2, 100, 200)}") # Expected: 100 (2 is prime)
-print(f"x_or_y(4, 'apple', 'banana') == {x_or_y(4, 'apple', 'banana')}") # Expected: banana (4 is not prime)
-print(f"x_or_y(1, 'prime', 'not prime') == {x_or_y(1, 'prime', 'not prime')}") # Expected: not prime (1 is not prime)
-print(f"x_or_y(11, 'found', 'missed') == {x_or_y(11, 'found', 'missed')}") # Expected: found (11 is prime)
+# print(f"x_or_y(7, 34, 12) == {x_or_y(7, 34, 12)}") # Expected: 34 (7 is prime)
+# print(f"x_or_y(15, 8, 5) == {x_or_y(15, 8, 5)}") # Expected: 5 (15 is not prime)
+# print(f"x_or_y(2, 100, 200) == {x_or_y(2, 100, 200)}") # Expected: 100 (2 is prime)
+# print(f"x_or_y(4, 'apple', 'banana') == {x_or_y(4, 'apple', 'banana')}") # Expected: banana (4 is not prime)
+# print(f"x_or_y(1, 'prime', 'not prime') == {x_or_y(1, 'prime', 'not prime')}") # Expected: not prime (1 is not prime)
+# print(f"x_or_y(11, 'found', 'missed') == {x_or_y(11, 'found', 'missed')}") # Expected: found (11 is prime)

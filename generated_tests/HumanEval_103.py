@@ -51,3 +51,8 @@ class TestRoundedAvg(unittest.TestCase):
     def test_wide_range_average_integer(self):
         # Test with a wider range where average is an integer
         self.assertEqual(rounded_avg(1, 19), "0b1010") # Avg (1+19)/2 = 10, Rounded 10, Binary 0b1010
+    def test_n_greater_than_m(self):
+            # Test case for the branch where n > m, expecting -1
+            self.assertEqual(rounded_avg(5, 1), -1)
+            self.assertEqual(rounded_avg(10, 0), -1)
+            self.assertEqual(rounded_avg(2, 1), -1)

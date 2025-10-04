@@ -49,11 +49,11 @@ def count_up_to(n: int) -> list[int]:
     return primes
 
 # Example Usage:
-print(f"count_up_to(5) => {count_up_to(5)}")
-print(f"count_up_to(11) => {count_up_to(11)}")
-print(f"count_up_to(0) => {count_up_to(0)}")
-print(f"count_up_to(20) => {count_up_to(20)}")
-print(f"count_up_to(1) => {count_up_to(1)}")
-print(f"count_up_to(18) => {count_up_to(18)}")
-print(f"count_up_to(2) => {count_up_to(2)}") # Test with n=2 explicitly
-print(f"count_up_to(3) => {count_up_to(3)}") # Test with n=3 explicitly
+# print(f"count_up_to(5) => {count_up_to(5)}")
+# print(f"count_up_to(11) => {count_up_to(11)}")
+# print(f"count_up_to(0) => {count_up_to(0)}")
+# print(f"count_up_to(20) => {count_up_to(20)}")
+# print(f"count_up_to(1) => {count_up_to(1)}")
+# print(f"count_up_to(18) => {count_up_to(18)}")
+# print(f"count_up_to(2) => {count_up_to(2)}") # Test with n=2 explicitly
+# print(f"count_up_to(3) => {count_up_to(3)}") # Test with n=3 explicitly
