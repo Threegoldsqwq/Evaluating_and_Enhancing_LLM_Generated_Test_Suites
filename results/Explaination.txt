@@ -1,0 +1,9 @@
+For Part 1:
+validity_rate.csv: The validate rate for each test file.
+coverage.csv: The code coverage for each test file.
+mutation_test_result.csv: The mutation test score for each test file.
+
+For Part 2:
+fix.csv: The fix log when fixing the failed test cases.
+cov_fixed.csv: The coverage rate for the fixed test suites.
+cov_enhanced.csv: The coverage rate for the test suites enhanced by LLM.
