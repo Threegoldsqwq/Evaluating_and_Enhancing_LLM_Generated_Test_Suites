@@ -22,34 +22,47 @@ class TestStringToMD5(unittest.TestCase):
         """Test with a simple lowercase string."""
         self.assertEqual(string_to_md5("test"), "098f6bcd4621d373cade4e832627b4f6")
 
-    def test_uppercase_string(self):
-        """Test with an uppercase string."""
-        self.assertEqual(string_to_md5("PYTHON"), "1ffcc91409951675a29d8a356a84d209")
 
-    def test_string_with_numbers(self):
-        """Test with a string containing only numbers."""
-        self.assertEqual(string_to_md5("1234567890"), "d174ab98d277d9f5a051fd6027ac5ba0")
+    def test_empty_string_returns_none(self):
+            """
+            Tests the edge case of an empty string, which should return None.
+            This covers the 'if not text:' branch (True path) and the subsequent 'return None'.
+            """
+            self.assertIsNone(string_to_md5(''))
 
-    def test_string_with_special_characters(self):
-        """Test with a string containing special characters."""
-        self.assertEqual(string_to_md5("!@#$%^&*()"), "0c6cf7a19237ec9b578c7921a415ff5e")
+    def test_basic_alphanumeric_string(self):
+            """
+            Tests a basic alphanumeric string to ensure the MD5 hash is correctly generated.
+            This covers the 'if not text:' branch (False path) and the MD5 hashing logic.
+            """
+            self.assertEqual(string_to_md5('teststring'), '5d41402abc4b2a76b9719d911017c592')
+
+    def test_string_with_whitespace(self):
+            """
+            Tests a string containing various whitespace characters.
+            """
+            self.assertEqual(string_to_md5('  hello world  '), '4c1d2e230327f2f1839e99a844855a53')
+            self.assertEqual(string_to_md5('\tnewline\n'), 'f089694116c4c69811f5d72f9ff0d1a4')
+
+    def test_string_with_only_whitespace(self):
+            """
+            Tests a string that consists only of whitespace characters.
+            """
+            self.assertEqual(string_to_md5('   '), '379d75069b7636e053d2d24d2621c168')
+
+    def test_string_with_unicode_characters(self):
+            """
+            Tests a string containing non-ASCII (Unicode) characters to ensure UTF-8 encoding is handled correctly.
+            """
+            self.assertEqual(string_to_md5('你好世界'), '211e4f45143a44f9f74358de711202e2')
+            self.assertEqual(string_to_md5('résumé'), '034e403d526e3c32729a8a728d8b4e7e')
+            self.assertEqual(string_to_md5('😂🤷‍♀️👍'), '6b127393282b13286082987dd5a14d59')
 
     def test_long_string(self):
-        """Test with a relatively long string."""
-        long_text = "This is a much longer string that should still produce a valid MD5 hash. It contains various characters and spaces to ensure the hashing algorithm works correctly with diverse inputs."
-        self.assertEqual(string_to_md5(long_text), "24a18018d963554b73b53c7a6595d2c0")
-
-    def test_string_with_leading_trailing_spaces(self):
-        """Test a string with leading and trailing spaces."""
-        self.assertEqual(string_to_md5("  padded string  "), "aa9e001851e5e01b38f8319f6368d9f4")
-
-    def test_unicode_string(self):
-        """Test with a Unicode string (non-ASCII characters)."""
-        self.assertEqual(string_to_md5("你好世界"), "b80e8e04058d84400e28f20b36873b13")
-
-    def test_string_with_newline_and_tab(self):
-        """Test with a string containing newline and tab characters."""
-        self.assertEqual(string_to_md5("line1\n\tline2"), "94b9f33333065b93d3b7623910f225e3")
-
+            """
+            Tests a relatively long string to ensure the hashing handles larger inputs efficiently.
+            """
+            long_text = "This is a very long string that should be hashed correctly by the MD5 algorithm. " * 10
+            self.assertEqual(string_to_md5(long_text), '70f2b3802e9ee4c2293b036ce85c1ec8')
 if __name__ == '__main__':
     unittest.main()

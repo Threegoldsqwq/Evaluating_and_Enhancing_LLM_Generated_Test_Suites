@@ -45,3 +45,26 @@ class TestCountPrimeHexDigits(unittest.TestCase):
         # Test with a longer, more complex string containing various prime and non-prime digits
         self.assertEqual(count_prime_hex_digits("DEADBEEFCAFEDECADE"), 5) 
         # Primes: D (13), D (13), B (11), D (13), D (13) = 5
+    def test_empty_string(self):
+            self.assertEqual(count_prime_hex_digits(""), 0)
+
+    def test_no_prime_digits(self):
+            self.assertEqual(count_prime_hex_digits("014689ACEF"), 0)
+
+    def test_all_prime_digits(self):
+            self.assertEqual(count_prime_hex_digits("2357BD"), 6)
+
+    def test_mixed_digits(self):
+            self.assertEqual(count_prime_hex_digits("12A3F5"), 3)
+
+    def test_repeated_prime_digits(self):
+            self.assertEqual(count_prime_hex_digits("22BBDD"), 6)
+
+    def test_single_prime_digit(self):
+            self.assertEqual(count_prime_hex_digits("7"), 1)
+
+    def test_single_non_prime_digit(self):
+            self.assertEqual(count_prime_hex_digits("A"), 0)
+
+    def test_long_mixed_string(self):
+            self.assertEqual(count_prime_hex_digits("0123456789ABCDEF"), 6) # 2,3,5,7,B,D

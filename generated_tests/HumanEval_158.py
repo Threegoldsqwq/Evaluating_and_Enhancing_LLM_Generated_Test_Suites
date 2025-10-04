@@ -95,3 +95,6 @@ class TestFindMax(unittest.TestCase):
         Lexicographical order: "az" < "azzz" < "za" < "zzza"
         """
         self.assertEqual(find_max(["zzza", "azzz", "za", "az"]), "az")
+    def test_empty_list(self):
+            """Test with an empty list should return None."""
+            self.assertIsNone(find_max([]))

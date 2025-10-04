@@ -41,3 +41,38 @@ class TestRabbitCarrots(unittest.TestCase):
     def test_max_values_need_more_than_remaining(self):
         # Scenario: High values, need is more than remaining
         self.assertEqual(eat(1000, 1000, 500), [1500, 0])
+    def test_rabbit_wants_more_than_available(self):
+            # Test case where the rabbit needs more carrots than are available.
+            # This covers the branch of min(need, remaining) where remaining < need.
+            number = 10
+            need = 20
+            remaining = 5
+            result = eat(number, need, remaining)
+            self.assertEqual(result, [15, 0]) # 10 (eaten) + 5 (from remaining) = 15; 5 - 5 = 0 left
+
+    def test_rabbit_needs_zero_carrots(self):
+            # Test case where the rabbit needs 0 additional carrots.
+            # This covers min(0, remaining).
+            number = 5
+            need = 0
+            remaining = 10
+            result = eat(number, need, remaining)
+            self.assertEqual(result, [5, 10]) # 5 (eaten) + 0 (from remaining) = 5; 10 - 0 = 10 left
+
+    def test_no_carrots_remaining(self):
+            # Test case where there are 0 carrots remaining in stock.
+            # This covers min(need, 0).
+            number = 5
+            need = 10
+            remaining = 0
+            result = eat(number, need, remaining)
+            self.assertEqual(result, [5, 0]) # 5 (eaten) + 0 (from remaining) = 5; 0 - 0 = 0 left
+
+    def test_rabbit_needs_exactly_available(self):
+            # Test case where the rabbit needs exactly the number of carrots available.
+            # This covers min(x, x).
+            number = 5
+            need = 5
+            remaining = 5
+            result = eat(number, need, remaining)
+            self.assertEqual(result, [10, 0]) # 5 (eaten) + 5 (from remaining) = 10; 5 - 5 = 0 left

@@ -50,5 +50,46 @@ class TestWordsString(unittest.TestCase):
         self.assertEqual(words_string("One, two, three, four, five, six"),
                          ["One", "two", "three", "four", "five", "six"])
 
+    def test_words_string_only_spaces(self):
+            # Test case: Input string contains only spaces
+            self.assertEqual(self.solution("   "), [])
+
+    def test_words_string_only_commas(self):
+            # Test case: Input string contains only commas
+            self.assertEqual(self.solution(",,,,"), [])
+
+    def test_words_string_mixed_empty_delimiters(self):
+            # Test case: Input string contains only spaces and commas, resulting in an empty list
+            self.assertEqual(self.solution(" , ,  , "), [])
+
+    def test_words_string_leading_trailing_commas(self):
+            # Test case: Words with leading and trailing commas
+            self.assertEqual(self.solution(",word1,word2,"), ["word1", "word2"])
+
+    def test_words_string_multiple_spaces_between_words(self):
+            # Test case: Multiple spaces between words
+            self.assertEqual(self.solution("one   two    three"), ["one", "two", "three"])
+
+    def test_words_string_multiple_commas_between_words(self):
+            # Test case: Multiple commas between words
+            self.assertEqual(self.solution("apple,,banana,,,cherry"), ["apple", "banana", "cherry"])
+
+    def test_words_string_mixed_multiple_delimiters(self):
+            # Test case: A complex mix of multiple spaces and commas as delimiters
+            self.assertEqual(self.solution("first,,  second   ,third,, "), ["first", "second", "third"])
+
+    def test_words_string_with_tabs(self):
+            # Test case: Input string with tab characters as delimiters, which split() handles
+            self.assertEqual(self.solution("word1\tword2,\tword3"), ["word1", "word2", "word3"])
+
+    def test_words_string_unicode_characters(self):
+            # Test case: Input with unicode characters (should behave the same)
+            self.assertEqual(self.solution("你好,世界"), ["你好", "世界"])
+            self.assertEqual(self.solution("α, β γ"), ["α", "β", "γ"])
+
+    def test_words_string_no_delimiter_single_word_with_spaces(self):
+            # Test case: A single word that itself contains spaces but should be split
+            # This tests the behavior when no actual "word" delimiters are present other than spaces
+            self.assertEqual(self.solution("justoneword"), ["justoneword"])
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)

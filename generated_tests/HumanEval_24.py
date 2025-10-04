@@ -48,3 +48,21 @@ class TestLargestDivisor(unittest.TestCase):
     def test_smallest_composite_not_power_of_prime(self):
         # Smallest composite number that is not a prime power (and not an example).
         self.assertEqual(largest_divisor(6), 3)
+    def test_value_error_for_n_less_than_or_equal_to_1(self):
+            # Test n = 1, which should raise a ValueError
+            with self.assertRaisesRegex(ValueError, "Input n must be greater than 1."):
+                largest_divisor(1)
+
+            # Test n = 0, which should also raise a ValueError
+            with self.assertRaisesRegex(ValueError, "Input n must be greater than 1."):
+                largest_divisor(0)
+
+            # Test with a negative number, e.g., n = -5, to ensure the condition holds
+            with self.assertRaisesRegex(ValueError, "Input n must be greater than 1."):
+                largest_divisor(-5)
+
+        # Note on line 40: The final 'return 1' in the solution code is unreachable
+        # for any n > 1 because the loop "for i in range(n - 1, 0, -1)" will always
+        # reach i=1, and 'n % 1 == 0' is always true, causing an earlier return.
+        # If n <= 1, a ValueError is raised. Thus, this specific line is dead code
+        # and cannot be covered by a test case without altering the function's logic.

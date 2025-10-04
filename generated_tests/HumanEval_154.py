@@ -61,6 +61,15 @@ class TestCycpatternCheck(unittest.TestCase):
         # A more complex case where no rotation should match
         self.assertFalse(cycpattern_check("abcabc", "cabac"))
 
+    def test_empty_word2_non_empty_word1(self):
+            # Test case: word2 is an empty string, word1 is not empty.
+            # An empty string is considered a substring of any string.
+            self.assertTrue(cycpattern_check("abcdef", ""))
+
+    def test_empty_word2_empty_word1(self):
+            # Test case: both word1 and word2 are empty strings.
+            # An empty string is a substring of an empty string.
+            self.assertTrue(cycpattern_check("", ""))
 # To run these tests, you would typically have the `cycpattern_check` function
 # defined in the same file or imported. Then you can run:
 # if __name__ == '__main__':

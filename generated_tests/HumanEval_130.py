@@ -82,6 +82,42 @@ class TestTribonacci(unittest.TestCase):
         # tri(9) = 9 + 2 + tri(7) = 11 + 24 = 35
         self.assertEqual(tribonacci(9), [1, 3, 2, 8, 3, 15, 4, 24, 5, 35])
 
+    def test_tribonacci_negative_n(self):
+            # Covers the defensive check for n < 0 (line 12)
+            self.assertEqual(tribonacci(-1), [])
+            self.assertEqual(tribonacci(-5), [])
+
+    def test_tribonacci_n_is_zero(self):
+            # Covers the base case n=0 (line 21), where dp[0] is set.
+            # This path bypasses the 'if n >= 1' condition and the main loop.
+            self.assertEqual(tribonacci(0), [1])
+
+    def test_tribonacci_n_is_one(self):
+            # Covers the 'if n >= 1' condition evaluating to True (line 22)
+            # and the assignment dp[1] = 3 (line 23).
+            # This path still bypasses the main 'for' loop.
+            self.assertEqual(tribonacci(1), [1, 3])
+
+    def test_tribonacci_n_is_two(self):
+            # Covers entering the 'for' loop and the 'if i % 2 == 0' branch (line 29)
+            # for i = 2.
+            self.assertEqual(tribonacci(2), [1, 3, 2])
+
+    def test_tribonacci_n_is_three(self):
+            # Covers both the 'if i % 2 == 0' and the 'else' (odd number) branches
+            # within the 'for' loop (lines 29 and 32).
+            # i = 2 (even), i = 3 (odd).
+            self.assertEqual(tribonacci(3), [1, 3, 2, 8])
+
+    def test_tribonacci_larger_even_n(self):
+            # Ensures correct calculation for a longer sequence ending with an even number.
+            # tri(4) = 1 + 4 // 2 = 3
+            self.assertEqual(tribonacci(4), [1, 3, 2, 8, 3])
+
+    def test_tribonacci_larger_odd_n(self):
+            # Ensures correct calculation for a longer sequence ending with an odd number.
+            # tri(5) = tri(4) + tri(3) + (1 + (5+1)//2) = 3 + 8 + (1 + 3) = 11 + 4 = 15
+            self.assertEqual(tribonacci(5), [1, 3, 2, 8, 3, 15])
 # To run these tests, you would typically include:
 # if __name__ == '__main__':
 #     unittest.main()

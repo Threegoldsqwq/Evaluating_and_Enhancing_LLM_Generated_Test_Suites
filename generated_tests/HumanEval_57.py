@@ -57,3 +57,34 @@ class TestMonotonic(unittest.TestCase):
     def test_not_monotonic_peak(self):
         """Test a list that increases then decreases (not monotonic)."""
         self.assertFalse(monotonic([1, 5, 2, 0]))
+    def test_all_elements_identical(self):
+            # Test case where all elements are identical, making it both increasing and decreasing
+            self.assertTrue(monotonic([7, 7, 7, 7]))
+            self.assertTrue(monotonic([0, 0, 0]))
+            self.assertTrue(monotonic([-5, -5]))
+
+    def test_float_monotonic_increasing(self):
+            # Test with floating-point numbers, increasing
+            self.assertTrue(monotonic([1.1, 2.2, 3.3, 4.4]))
+            self.assertTrue(monotonic([1.0, 1.0, 2.0, 3.0]))
+
+    def test_float_monotonic_decreasing(self):
+            # Test with floating-point numbers, decreasing
+            self.assertTrue(monotonic([4.4, 3.3, 2.2, 1.1]))
+            self.assertTrue(monotonic([3.0, 2.0, 1.0, 1.0]))
+
+    def test_float_non_monotonic(self):
+            # Test with floating-point numbers, non-monotonic
+            self.assertFalse(monotonic([1.1, 2.2, 1.5]))
+            self.assertFalse(monotonic([5.0, 3.0, 4.0, 1.0]))
+
+    def test_two_element_lists(self):
+            # Test edge cases with exactly two elements
+            self.assertTrue(monotonic([10, 20]))  # Increasing
+            self.assertTrue(monotonic([20, 10]))  # Decreasing
+            self.assertTrue(monotonic([15, 15]))  # Identical
+
+    def test_longer_non_monotonic_sequences(self):
+            # Test longer sequences that are clearly non-monotonic
+            self.assertFalse(monotonic([1, 2, 5, 3, 4]))
+            self.assertFalse(monotonic([5, 4, 1, 3, 2]))

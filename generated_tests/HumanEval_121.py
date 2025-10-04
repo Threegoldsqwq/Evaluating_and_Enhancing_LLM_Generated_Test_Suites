@@ -80,5 +80,65 @@ class TestSolution(unittest.TestCase):
         # Sum: 3 + 5 = 8
         self.assertEqual(solution([0, 1, 3, 0, 5]), 8)
 
+    def test_empty_list(self):
+            """Test with an empty list, ensuring total_sum remains 0."""
+            self.assertEqual(solution([]), 0)
+
+    def test_no_qualifying_numbers_even_index_even_num(self):
+            """
+            Test case where numbers at even indices are even.
+            This covers the branch where 'index % 2 == 0' is true,
+            but 'num % 2 != 0' is false, preventing addition to total_sum.
+            """
+            self.assertEqual(solution([2, 10, 4, 12]), 0)
+            self.assertEqual(solution([0, 1, 2, 3, 4]), 0)
+
+    def test_no_qualifying_numbers_odd_index(self):
+            """
+            Test case where numbers that could be odd are exclusively at odd indices.
+            This covers the branch where 'index % 2 == 0' is false,
+            skipping the inner condition check.
+            """
+            self.assertEqual(solution([2, 3, 4, 5, 6, 7]), 0)
+            self.assertEqual(solution([10, 11, 12, 13]), 0)
+
+    def test_single_qualifying_number(self):
+            """
+            Test a list containing only one number that meets both criteria.
+            Ensures 'total_sum += num' is executed for a single instance.
+            """
+            self.assertEqual(solution([1, 2]), 1)
+            self.assertEqual(solution([0, 0, 5, 0]), 5)
+
+    def test_mixed_qualifying_and_non_qualifying(self):
+            """
+            Test a comprehensive scenario with a mix of qualifying and non-qualifying numbers
+            to ensure all branches and conditions are correctly handled throughout the loop.
+            """
+            # (index=0, num=1) -> add 1
+            # (index=1, num=2) -> skip (odd index)
+            # (index=2, num=3) -> add 3
+            # (index=3, num=4) -> skip (odd index)
+            # (index=4, num=5) -> add 5
+            # (index=5, num=6) -> skip (odd index)
+            # (index=6, num=7) -> add 7
+            self.assertEqual(solution([1, 2, 3, 4, 5, 6, 7]), 1 + 3 + 5 + 7) # Expected: 16
+            self.assertEqual(solution([10, 11, 1, 13, 3, 15, 20, 21, 5]), 1 + 3 + 5)
+
+    def test_negative_numbers(self):
+            """
+            Test with negative numbers, including cases where the sum should be negative.
+            """
+            # (index=0, num=-1) -> add -1
+            # (index=1, num=-2) -> skip (odd index)
+            # (index=2, num=-3) -> add -3
+            # (index=3, num=-4) -> skip (odd index)
+            # (index=4, num=-5) -> add -5
+            self.assertEqual(solution([-1, -2, -3, -4, -5]), -1 + -3 + -5) # Expected: -9
+            self.assertEqual(solution([-2, -1, -4, -3, -6]), 0) # No qualifying numbers
+
+    def test_large_numbers(self):
+            """Test with larger numbers to ensure correct summation."""
+            self.assertEqual(solution([101, 200, 303, 400, 505]), 101 + 303 + 505) # Expected: 909
 if __name__ == '__main__':
     unittest.main()

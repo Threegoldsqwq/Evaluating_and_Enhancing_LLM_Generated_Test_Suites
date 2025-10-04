@@ -56,5 +56,42 @@ class TestSearchFunction(unittest.TestCase):
         # Case: List contains unique numbers all greater than 1, so no solution
         self.assertEqual(search([2, 3, 4, 5, 6]), -1)
 
+    def test_no_qualifying_number_returns_minus_one(self):
+            # Test cases where no number satisfies the frequency >= value condition.
+            # This covers the path where max_qualifying_int remains -1.
+            self.assertEqual(search([2, 1]), -1)  # {2:1} -> 1 < 2
+            self.assertEqual(search([3, 3]), -1)  # {3:2} -> 2 < 3
+            self.assertEqual(search([5, 5, 5]), -1)  # {5:3} -> 3 < 5
+            self.assertEqual(search([10] * 9), -1) # {10:9} -> 9 < 10
+            self.assertEqual(search([100] * 99), -1) # {100:99} -> 99 < 100
+
+    def test_single_qualifying_number(self):
+            # Test cases where only one type of number qualifies.
+            self.assertEqual(search([1]), 1)  # {1:1} -> 1 >= 1
+            self.assertEqual(search([1, 1, 1]), 1) # {1:3} -> 3 >= 1
+            self.assertEqual(search([2, 2]), 2)  # {2:2} -> 2 >= 2
+            self.assertEqual(search([5] * 5), 5) # {5:5} -> 5 >= 5
+
+    def test_multiple_qualifying_numbers_selects_greatest(self):
+            # Test cases with multiple numbers qualifying, ensuring the maximum is returned.
+            self.assertEqual(search([1, 1, 2, 2]), 2)  # {1:2, 2:2}. Both qualify, 2 is greater.
+            self.assertEqual(search([1, 1, 1, 3, 3, 3]), 3) # {1:3, 3:3}. Both qualify, 3 is greater.
+            self.assertEqual(search([2, 2, 2, 1, 1, 1, 1]), 2) # {2:3, 1:4}. Both qualify, 2 is greater.
+            self.assertEqual(search([1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3]), 3)
+            # {1:4 (qualifies), 2:2 (doesn't qualify), 3:6 (qualifies)}. Result: 3.
+
+    def test_mixed_qualifying_and_non_qualifying_numbers(self):
+            # Test cases with a mix of numbers, where some qualify and some do not.
+            self.assertEqual(search([1, 1, 2]), 1) # {1:2 (qualifies), 2:1 (doesn't)}.
+            self.assertEqual(search([1, 3, 3]), 1) # {1:1 (qualifies), 3:2 (doesn't)}.
+            self.assertEqual(search([2, 2, 3, 3]), 2) # {2:2 (qualifies), 3:2 (doesn't)}.
+            self.assertEqual(search([5, 5, 5, 5, 5, 10, 10, 10, 10]), 5)
+            # {5:5 (qualifies), 10:4 (doesn't)}.
+
+    def test_large_value_numbers(self):
+            # Test with larger integer values.
+            self.assertEqual(search([100] * 100), 100)
+            self.assertEqual(search([99] * 100 + [100] * 99), 99) # 99 qualifies, 100 does not
+            self.assertEqual(search([99] * 99 + [100] * 100), 100) # Both qualify, 100 is max
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)

@@ -49,6 +49,27 @@ class TestIsEqualToSumEven(unittest.TestCase):
         """Test with a larger even number n=100."""
         self.assertTrue(is_equal_to_sum_even(100))
 
+    def test_n_less_than_8(self):
+            # Test cases for n < 8 (should all return False)
+            self.assertFalse(is_equal_to_sum_even(0), "n=0 should return False (too small)")
+            self.assertFalse(is_equal_to_sum_even(2), "n=2 should return False (too small)")
+            self.assertFalse(is_equal_to_sum_even(6), "n=6 should return False (too small and even)")
+            self.assertFalse(is_equal_to_sum_even(7), "n=7 should return False (too small and odd)")
+            self.assertFalse(is_equal_to_sum_even(-4), "n=-4 should return False (negative and too small)")
+
+    def test_n_odd_and_greater_than_or_equal_to_8(self):
+            # Test cases for n >= 8 but n is odd (should all return False)
+            self.assertFalse(is_equal_to_sum_even(9), "n=9 should return False (odd number)")
+            self.assertFalse(is_equal_to_sum_even(15), "n=15 should return False (odd number)")
+            self.assertFalse(is_equal_to_sum_even(101), "n=101 should return False (odd number)")
+
+    def test_n_even_and_greater_than_or_equal_to_8(self):
+            # Test cases for n >= 8 and n is even (should all return True)
+            self.assertTrue(is_equal_to_sum_even(8), "n=8 should return True (minimum valid sum)")
+            self.assertTrue(is_equal_to_sum_even(10), "n=10 should return True")
+            self.assertTrue(is_equal_to_sum_even(12), "n=12 should return True")
+            self.assertTrue(is_equal_to_sum_even(100), "n=100 should return True (large even number)")
+            self.assertTrue(is_equal_to_sum_even(2000), "n=2000 should return True (very large even number)")
 # To run these tests, you would typically have the is_equal_to_sum_even function defined.
 # For instance:
 # def is_equal_to_sum_even(n):

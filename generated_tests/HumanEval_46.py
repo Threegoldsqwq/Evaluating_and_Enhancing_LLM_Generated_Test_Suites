@@ -67,6 +67,47 @@ class TestFib4(unittest.TestCase):
         # fib4(12) = 200 + 104 + 54 + 28 = 386
         self.assertEqual(fib4(12), 386)
 
+    def test_fib4_extended_sequence(self):
+            """Test fib4 for larger values of n beyond docstring examples."""
+            self.assertEqual(fib4(8), 28)
+            self.assertEqual(fib4(9), 54)
+            self.assertEqual(fib4(10), 104)
+            self.assertEqual(fib4(11), 200) # 28 + 54 + 104 + 14 = 200, (fib4(8)+fib4(9)+fib4(10)+fib4(7))
+
+    def test_fib4_negative_input(self):
+            """
+            Test fib4 with negative integer input.
+            The function definition specifies 'non-negative integer' for n.
+            However, the current implementation implicitly handles negative 'n' by
+            skipping the loop and returning 0, which is an execution path.
+            This test covers that specific behavior.
+            """
+            self.assertEqual(fib4(-1), 0)
+            self.assertEqual(fib4(-5), 0)
+            self.assertEqual(fib4(-100), 0)
+
+    def test_fib4_non_integer_input(self):
+            """
+            Test fib4 with non-integer input to cover implicit type checking.
+            The `range()` function expects integer arguments, so passing a non-integer
+            for `n` will cause a TypeError, covering this implicit error path
+            related to the function's argument type hint.
+            """
+            # Test with float, which will cause TypeError in range(4, n+1)
+            with self.assertRaises(TypeError):
+                fib4(4.0)
+            with self.assertRaises(TypeError):
+                fib4(5.5)
+
+            # Test with string, will cause TypeError in "abc" + 1 or range(4, str)
+            with self.assertRaises(TypeError):
+                fib4("abc")
+
+            # Test with other invalid types
+            with self.assertRaises(TypeError):
+                fib4([1, 2])
+            with self.assertRaises(TypeError):
+                fib4(None)
 # To run these tests:
 # if __name__ == '__main__':
 #     # If running directly, make sure fib4 function is defined or imported.

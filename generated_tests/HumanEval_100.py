@@ -42,6 +42,21 @@ class TestMakeAPile(unittest.TestCase):
         # Larger odd input
         self.assertEqual(make_a_pile(15), [15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43])
 
+    def test_make_a_pile_example1(self):
+            # Test case for n = 3 (odd, > 1)
+            self.assertEqual(make_a_pile(3), [3, 5, 7])
+
+    def test_make_a_pile_example2_single_level(self):
+            # Test case for n = 1 (smallest positive integer, single level)
+            self.assertEqual(make_a_pile(1), [1])
+
+    def test_make_a_pile_example3(self):
+            # Test case for n = 4 (even, > 1)
+            self.assertEqual(make_a_pile(4), [4, 6, 8, 10])
+
+    def test_make_a_pile_example4(self):
+            # Test case for n = 2 (smallest even positive integer > 1)
+            self.assertEqual(make_a_pile(2), [2, 4])
 # This allows running the tests directly if the file is executed.
 # In a real scenario, `make_a_pile` function would be defined or imported.
 if __name__ == '__main__':

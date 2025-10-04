@@ -10,13 +10,7 @@ class TestDerivative(unittest.TestCase):
         # Test case provided in the problem description
         self.assertEqual(derivative([1, 2, 3]), [2, 6])
 
-    def test_constant_polynomial(self):
-        # Derivative of a constant is 0, represented by an empty list
-        self.assertEqual(derivative([5]), [])
 
-    def test_zero_constant_polynomial(self):
-        # Derivative of 0 is 0
-        self.assertEqual(derivative([0]), [])
 
     def test_linear_polynomial(self):
         # Derivative of a + bx is b
@@ -41,3 +35,14 @@ class TestDerivative(unittest.TestCase):
     def test_long_polynomial(self):
         # Test with a longer polynomial to ensure scaling works for higher powers
         self.assertEqual(derivative([1, 2, 3, 4, 5, 6, 7]), [2, 6, 12, 20, 30, 42])
+    def test_empty_polynomial_coverage(self):
+            # Test case for an empty polynomial (n=0)
+            # Covers: if n == 0: (line 14), return [] (line 15)
+            self.assertEqual(derivative([]), [])
+
+    def test_constant_polynomial_coverage(self):
+            # Test case for a constant polynomial (n=1)
+            # Covers: if n == 1: (line 16), return [0] (line 17)
+            self.assertEqual(derivative([5]), [0])
+            self.assertEqual(derivative([0]), [0]) # Test with a constant 0
+            self.assertEqual(derivative([-100]), [0])

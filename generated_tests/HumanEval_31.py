@@ -32,6 +32,28 @@ class TestIsPrime(unittest.TestCase):
     def test_thirteen_thousand_four_hundred_forty_one_is_prime(self):
         self.assertTrue(is_prime(13441))
 
+    def test_prime_two(self):
+            # Covers the 'if n == 2:' branch (line 3) when n is 2.
+            self.assertTrue(is_prime(2))
+
+    def test_non_prime_zero(self):
+            # Covers the 'if n <= 1:' branch (line 1) when n is 0.
+            self.assertFalse(is_prime(0))
+
+    def test_non_prime_negative(self):
+            # Covers the 'if n <= 1:' branch (line 1) for negative numbers.
+            self.assertFalse(is_prime(-1))
+            self.assertFalse(is_prime(-100))
+
+    def test_non_prime_odd_composite(self):
+            # Covers the 'for i in range(3, limit + 1, 2):' loop and
+            # the 'if n % i == 0:' return False for an odd composite number.
+            # The existing doctests for non-primes (6, 4, 1) either hit n <= 1 or n % 2 == 0.
+            # This test ensures the odd divisor check within the loop is exercised.
+            self.assertFalse(is_prime(9))  # 3*3
+            self.assertFalse(is_prime(15)) # 3*5
+            self.assertFalse(is_prime(25)) # 5*5
+            self.assertFalse(is_prime(49)) # 7*7
 # Assume the function 'is_prime' exists in the scope where these tests are run.
 # For example:
 # def is_prime(n):

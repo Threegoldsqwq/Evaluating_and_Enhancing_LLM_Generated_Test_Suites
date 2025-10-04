@@ -32,3 +32,26 @@ class TestGetPositive(unittest.TestCase):
 
     def test_numbers_with_duplicates_and_zeros(self):
         self.assertEqual(get_positive([1, -1, 2, -2, 1, 0, 3, 3, -3, 0]), [1, 2, 1, 3, 3])
+    def test_empty_list(self):
+            self.assertEqual(self.solution.get_positive([]), [])
+
+    def test_all_negative_numbers(self):
+            self.assertEqual(self.solution.get_positive([-1, -2, -3, -100]), [])
+
+    def test_all_zero_numbers(self):
+            self.assertEqual(self.solution.get_positive([0, 0, 0, 0]), [])
+
+    def test_all_positive_numbers(self):
+            self.assertEqual(self.solution.get_positive([1, 2, 3, 100]), [1, 2, 3, 100])
+
+    def test_single_positive_number(self):
+            self.assertEqual(self.solution.get_positive([7]), [7])
+
+    def test_single_negative_number(self):
+            self.assertEqual(self.solution.get_positive([-7]), [])
+
+    def test_single_zero_number(self):
+            self.assertEqual(self.solution.get_positive([0]), [])
+
+    def test_mixed_numbers_with_floats(self):
+            self.assertEqual(self.solution.get_positive([-1.5, 2.3, -4.0, 5.7, 0.0, 6.1]), [2.3, 5.7, 6.1])

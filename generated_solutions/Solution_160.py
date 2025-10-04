@@ -1,4 +1,4 @@
-def evaluate_expression(operator, operand):
+def do_algebra(operator, operand):
     """
     Given two lists operator, and operand, builds an algebraic expression
     and returns its evaluation.

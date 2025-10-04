@@ -47,3 +47,12 @@ class TestStringSequence(unittest.TestCase):
         """Test with n = 20, a slightly larger case."""
         expected_output = '0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'
         self.assertEqual(string_sequence(20), expected_output)
+    def test_string_sequence_negative_n(self):
+            # Test case for n < 0, which should result in an empty string.
+            # This covers the branch where range(n + 1) generates an empty sequence (e.g., range(0)).
+            self.assertEqual(string_sequence(-1), "")
+            self.assertEqual(string_sequence(-5), "")
+
+    def test_string_sequence_medium_positive_n(self):
+            # Test with a moderately larger positive n to ensure the pattern holds for more numbers.
+            self.assertEqual(string_sequence(10), "0 1 2 3 4 5 6 7 8 9 10")

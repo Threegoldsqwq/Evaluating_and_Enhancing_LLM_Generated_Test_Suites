@@ -78,3 +78,66 @@ class TestAddEvenElementsAtOddIndices(unittest.TestCase):
         # idx 7: 80 (even)
         # idx 9: 100 (even)
         self.assertEqual(add([1, 20, -3, 40, 5, -60, 7, 80, -9, 100]), 20 + 40 - 60 + 80 + 100) # Expected: 180
+    def test_two_elements_odd_index_even(self):
+            # Test case for a list with two elements, where the element at the odd index is even.
+            # Index 0: 1 (even index, skip)
+            # Index 1: 2 (odd index, even element -> add 2)
+            self.assertEqual(self.solution.add([1, 2]), 2)
+
+    def test_two_elements_odd_index_odd(self):
+            # Test case for a list with two elements, where the element at the odd index is odd.
+            # Index 0: 2 (even index, skip)
+            # Index 1: 3 (odd index, odd element -> skip)
+            self.assertEqual(self.solution.add([2, 3]), 0)
+
+    def test_two_elements_all_even(self):
+            # Test case for a list with two elements, both even, element at odd index should be added.
+            # Index 0: 2 (even index, skip)
+            # Index 1: 4 (odd index, even element -> add 4)
+            self.assertEqual(self.solution.add([2, 4]), 4)
+
+    def test_single_element_odd(self):
+            # Test case for a single-element list with an odd number.
+            # Index 0: 1 (even index, skip)
+            self.assertEqual(self.solution.add([1]), 0)
+
+    def test_negative_numbers_mixed(self):
+            # Test case with negative numbers, including even numbers at odd indices.
+            # Index 0: -1 (even index, skip)
+            # Index 1: -2 (odd index, even element -> add -2)
+            # Index 2: -3 (even index, skip)
+            # Index 3: -4 (odd index, even element -> add -4)
+            # Index 4: -5 (even index, skip)
+            # Index 5: -6 (odd index, even element -> add -6)
+            # Result: -2 + -4 + -6 = -12
+            self.assertEqual(self.solution.add([-1, -2, -3, -4, -5, -6]), -12)
+
+    def test_negative_numbers_only_even_at_odd_indices(self):
+            # Test case with mixed positive/negative, specifically targeting even negative numbers at odd indices.
+            # Index 0: 1 (even index, skip)
+            # Index 1: -2 (odd index, even element -> add -2)
+            # Index 2: 3 (even index, skip)
+            # Index 3: -4 (odd index, even element -> add -4)
+            # Index 4: 5 (even index, skip)
+            # Index 5: -6 (odd index, even element -> add -6)
+            # Result: -2 + -4 + -6 = -12
+            self.assertEqual(self.solution.add([1, -2, 3, -4, 5, -6]), -12)
+
+    def test_all_zeros(self):
+            # Test case with a list containing all zeros.
+            # Index 0: 0 (even index, skip)
+            # Index 1: 0 (odd index, even element -> add 0)
+            # Index 2: 0 (even index, skip)
+            # Index 3: 0 (odd index, even element -> add 0)
+            # Index 4: 0 (even index, skip)
+            # Result: 0
+            self.assertEqual(self.solution.add([0, 0, 0, 0, 0]), 0)
+
+    def test_large_numbers(self):
+            # Test case with large integer values.
+            # Index 0: 10^9 (even index, skip)
+            # Index 1: 2*10^9 (odd index, even element -> add 2*10^9)
+            # Index 2: 3*10^9 (even index, skip)
+            # Index 3: 4*10^9 (odd index, even element -> add 4*10^9)
+            # Result: 2*10^9 + 4*10^9 = 6*10^9
+            self.assertEqual(self.solution.add([10**9, 2*10**9, 3*10**9, 4*10**9]), 6*10**9)

@@ -41,3 +41,20 @@ class TestDecimalToBinary(unittest.TestCase):
     def test_large_number_all_ones(self):
         # Test case for a larger number that is (2^n - 1) (e.g., 255)
         self.assertEqual(decimal_to_binary(255), "db11111111db")
+    def test_zero_decimal(self):
+            # Test case for input 0, which should result in "db0db"
+            # bin(0) is '0b0', slicing [2:] yields '0'
+            self.assertEqual(self.solution.decimal_to_binary(0), "db0db")
+
+    def test_negative_decimal(self):
+            # Test case for a negative decimal number.
+            # Python's bin(-1) is '-0b1'.
+            # The slice [2:] on '-0b1' results in 'b1'.
+            # This confirms the behavior of the current implementation for negative inputs.
+            self.assertEqual(self.solution.decimal_to_binary(-1), "dbb1db")
+
+    def test_another_negative_decimal(self):
+            # Test case for another negative decimal number.
+            # Python's bin(-5) is '-0b101'.
+            # The slice [2:] on '-0b101' results in 'b101'.
+            self.assertEqual(self.solution.decimal_to_binary(-5), "dbb101db")

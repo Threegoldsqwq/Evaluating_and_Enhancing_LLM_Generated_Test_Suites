@@ -53,3 +53,38 @@ class TestEncrypt(unittest.TestCase):
     def test_string_with_only_non_alpha(self):
         # String with only numbers and symbols
         self.assertEqual(encrypt('12345!@#$%^&*()'), '12345!@#$%^&*()')
+    def test_empty_string(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Tests an edge case for input.
+            self.assertEqual(encrypt(''), '')
+
+    def test_string_with_spaces_and_numbers(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Ensures non-alphabetic characters are unchanged (line 47).
+            self.assertEqual(encrypt('hello world 123!'), 'lipps asvph 123!')
+
+    def test_uppercase_characters_and_wrap_around(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Tests uppercase handling (lines 23, 40) and alphabet wrap-around (line 35).
+            self.assertEqual(encrypt('XYZ ABC'), 'BCD EFG')
+
+    def test_mixed_case_and_punctuation(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Tests mixed case and preservation of punctuation (line 47).
+            self.assertEqual(encrypt('HeLlO, wOrLd!'), 'LiPpS, aSvPh!')
+
+    def test_only_non_alphabetic_characters(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Ensures a string consisting only of non-alphabetic characters is unchanged.
+            self.assertEqual(encrypt('12345!@#$%^&*()'), '12345!@#$%^&*()')
+
+    def test_all_z_to_d(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Specific test for wrap-around at the end of the alphabet.
+            self.assertEqual(encrypt('zzzZZZ'), 'dddDDD')
+
+    def test_single_character(self):
+            # Covers the function call (line 3) and the import (line 1)
+            # Test a single character, both lowercase and uppercase.
+            self.assertEqual(encrypt('a'), 'e')
+            self.assertEqual(encrypt('Z'), 'D')

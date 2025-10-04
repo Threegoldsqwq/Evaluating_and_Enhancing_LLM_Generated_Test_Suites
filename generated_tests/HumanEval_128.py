@@ -42,6 +42,11 @@ class TestProdSigns(unittest.TestCase):
         # Single negative number
         self.assertEqual(prod_signs([-7]), -7)
 
+    def test_empty_array(self):
+            """
+            Test case for an empty input array to cover the 'if not arr:' branch.
+            """
+            self.assertIsNone(prod_signs([]))
 # Assuming prod_signs function is defined elsewhere for testing purposes.
 # For example:
 # def prod_signs(arr):

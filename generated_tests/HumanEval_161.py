@@ -59,3 +59,62 @@ class TestSolve(unittest.TestCase):
     def test_mixed_letters_spaces_and_symbol(self):
         # String with mixed case letters, spaces, and a symbol. Letters swap case, others remain.
         self.assertEqual(solve("Hello World!"), "hELLO wORLD!")
+    def test_empty_string(self):
+            # Covers the 'has_letters = False' path for an empty input
+            self.assertEqual(solve(""), "")
+
+    def test_no_letters_only_digits(self):
+            # Covers the 'has_letters = False' path with only digits
+            self.assertEqual(solve("12345"), "54321")
+
+    def test_no_letters_only_symbols(self):
+            # Covers the 'has_letters = False' path with only symbols
+            self.assertEqual(solve("!@#$%"), "%$#@!")
+
+    def test_no_letters_mixed_non_alpha(self):
+            # Covers the 'has_letters = False' path with mixed non-alphabetic characters
+            self.assertEqual(solve("  123 !@#  "), "  #@! 321  ")
+
+    def test_string_with_only_spaces(self):
+            # Covers the 'has_letters = False' path with only spaces
+            self.assertEqual(solve("   "), "   ")
+
+    def test_all_lowercase_letters(self):
+            # Covers the 'has_letters = True' path, ensuring all lowercase become uppercase
+            self.assertEqual(solve("hello"), "HELLO")
+
+    def test_all_uppercase_letters(self):
+            # Covers the 'has_letters = True' path, ensuring all uppercase become lowercase
+            self.assertEqual(solve("WORLD"), "world")
+
+    def test_mixed_case_letters(self):
+            # Covers the 'has_letters = True' path, ensuring mixed case reversal
+            self.assertEqual(solve("PyThoN"), "pYtHoN")
+
+    def test_mixed_letters_and_non_letters(self):
+            # Covers the 'has_letters = True' path, ensuring non-letters remain unchanged
+            self.assertEqual(solve("a1B2c!3D"), "A1b2C!3d")
+
+    def test_single_lowercase_letter(self):
+            # Covers 'has_letters = True' for a minimal case (single lowercase letter)
+            self.assertEqual(solve("x"), "X")
+
+    def test_single_uppercase_letter(self):
+            # Covers 'has_letters = True' for a minimal case (single uppercase letter)
+            self.assertEqual(solve("Y"), "y")
+
+    def test_letters_at_start_middle_end(self):
+            # Covers 'has_letters = True' path with letters at various positions
+            self.assertEqual(solve("a_123_Z_b"), "A_123_z_B")
+
+    def test_string_with_unicode_letters_lower(self):
+            # Covers 'has_letters = True' path with unicode lowercase letters
+            self.assertEqual(solve("straße"), "STRASSE")
+
+    def test_string_with_unicode_letters_upper(self):
+            # Covers 'has_letters = True' path with unicode uppercase letters
+            self.assertEqual(solve("CAFÉ"), "café")
+
+    def test_string_with_mixed_unicode_and_ascii_letters(self):
+            # Covers 'has_letters = True' path with a mix of unicode and ASCII letters
+            self.assertEqual(solve("Python-Grüße"), "pYTHON-gRÜSSE")

@@ -99,5 +99,85 @@ class TestStrongestExtension(unittest.TestCase):
         # 'LOG_MANAGER' is clearly the strongest.
         self.assertEqual(Strongest_Extension('ComplexApp', ['API_Gateway', 'dataService', 'Configurator', 'LOG_MANAGER']), 'ComplexApp.LOG_MANAGER')
 
+    def test_empty_extensions_list_raises_error(self):
+            """
+            Test that calling Strongest_Extension with an empty list of extensions
+            raises a ValueError, covering the 'if not extensions:' branch.
+            """
+            class_name = "MyClass"
+            extensions = []
+            with self.assertRaisesRegex(ValueError, "Extensions list cannot be empty"):
+                Strongest_Extension(class_name, extensions)
+
+    def test_single_extension_list(self):
+            """
+            Test with only one extension in the list. This checks the initial
+            strength calculation and ensures the loop is correctly skipped.
+            """
+            self.assertEqual(Strongest_Extension("App", ["BaseExt"]), "App.BaseExt")
+            self.assertEqual(Strongest_Extension("Doc", ["API"]), "Doc.API")
+            self.assertEqual(Strongest_Extension("Util", ["helper"]), "Util.helper")
+
+    def test_tie_breaking_first_one_wins(self):
+            """
+            Test cases where multiple extensions have the same maximum strength.
+            The function should return the first one encountered in the list.
+            """
+            # Both "AbC" and "XyZ" have strength (2-1)=1
+            self.assertEqual(Strongest_Extension("TieBreaker", ["AbC", "XyZ", "pqr"]), "TieBreaker.AbC")
+            # Both "A" and "B" have strength (1-0)=1
+            self.assertEqual(Strongest_Extension("Alpha", ["A", "B", "c"]), "Alpha.A")
+            # Both "a" and "b" have strength (0-1)=-1
+            self.assertEqual(Strongest_Extension("Beta", ["a", "b", "C"]), "Beta.a")
+            # Three extensions with strength 1
+            self.assertEqual(Strongest_Extension("Gamma", ["Xyz", "AbC", "Pqr"]), "Gamma.Xyz")
+
+    def test_extensions_with_non_alphabetic_chars(self):
+            """
+            Test that non-alphabetic characters are ignored in strength calculation.
+            Strength should only consider uppercase and lowercase letters.
+            """
+            # "EXT-A": 4 uppercase (E,X,T,A), 0 lowercase. Strength = 4.
+            # "Ext123": 1 uppercase (E), 2 lowercase (x,t). Strength = -1.
+            # "e_x_t": 0 uppercase, 3 lowercase (e,x,t). Strength = -3.
+            # "Strong!": 1 uppercase (S), 5 lowercase (t,r,o,n,g). Strength = -4.
+            self.assertEqual(Strongest_Extension("Chars", ["Ext123", "e_x_t", "EXT-A", "Strong!"]), "Chars.EXT-A")
+
+            # Another scenario
+            # "P_Y_T_H_O_N": 6 uppercase, 0 lowercase. Strength = 6.
+            # "j_a_v_a": 0 uppercase, 4 lowercase. Strength = -4.
+            # "C++": 1 uppercase, 0 lowercase. Strength = 1.
+            self.assertEqual(Strongest_Extension("Lang", ["C++", "j_a_v_a", "P_Y_T_H_O_N"]), "Lang.P_Y_T_H_O_N")
+
+    def test_varied_strength_extensions(self):
+            """
+            Test a mix of extensions with positive, negative, and zero strengths.
+            """
+            # "UPPER": 5 uppercase, 0 lowercase. Strength = 5.
+            # "lower": 0 uppercase, 5 lowercase. Strength = -5.
+            # "MiXeD": 3 uppercase, 2 lowercase. Strength = 1.
+            # "zero": 0 uppercase, 4 lowercase. Strength = -4.
+            # "ZERo": 3 uppercase, 1 lowercase. Strength = 2.
+            self.assertEqual(Strongest_Extension("Mix", ["lower", "MiXeD", "zero", "ZERo", "UPPER"]), "Mix.UPPER")
+
+            # Test order dependency with mixed strengths
+            self.assertEqual(Strongest_Extension("Mix2", ["ZERo", "MiXeD", "UPPER", "lower"]), "Mix2.UPPER")
+            self.assertEqual(Strongest_Extension("Mix3", ["MiXeD", "ZERo", "UPPER", "lower"]), "Mix3.UPPER")
+
+    def test_all_uppercase_extensions_multiple_max(self):
+            """
+            Test with multiple extensions all having maximum positive strength.
+            Ensures the first one is chosen.
+            """
+            self.assertEqual(Strongest_Extension("UpperTest", ["AAA", "BBB", "CCC"]), "UpperTest.AAA")
+            self.assertEqual(Strongest_Extension("UpperTest2", ["ZZZZ", "AAAA", "BBBB"]), "UpperTest2.ZZZZ")
+
+    def test_all_lowercase_extensions_multiple_max(self):
+            """
+            Test with multiple extensions all having maximum negative strength (i.e., least negative).
+            Ensures the first one is chosen.
+            """
+            self.assertEqual(Strongest_Extension("LowerTest", ["aaa", "bbb", "ccc"]), "LowerTest.aaa")
+            self.assertEqual(Strongest_Extension("LowerTest2", ["zzz", "aaa", "bbb"]), "LowerTest2.zzz")
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)

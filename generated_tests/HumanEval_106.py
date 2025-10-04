@@ -49,6 +49,53 @@ class TestF(unittest.TestCase):
         expected = [1, 2, 6, 24, 15, 720, 28, 40320, 45, 3628800, 66, 479001600]
         self.assertEqual(f(12), expected)
 
+    def test_f_edge_case_n_zero(self):
+            # Test f(n) with n=0, should return an empty list.
+            # This covers the 'for j in range(n)' loop not executing.
+            self.assertEqual(f(0), [])
+
+    def test_f_edge_case_n_one(self):
+            # Test f(n) with n=1. i=1 (odd), so sum_up_to_k(1) = 1.
+            # This covers f and sum_up_to_k.
+            self.assertEqual(f(1), [1])
+
+    def test_f_small_n_mixed_cases(self):
+            # Test f(n) with n=2.
+            # i=1 (odd) -> sum_up_to_k(1) = 1
+            # i=2 (even) -> factorial(2) = 2
+            # This covers f, sum_up_to_k, and factorial.
+            self.assertEqual(f(2), [1, 2])
+
+            # Test f(n) with n=3.
+            # i=1 (odd) -> sum_up_to_k(1) = 1
+            # i=2 (even) -> factorial(2) = 2
+            # i=3 (odd) -> sum_up_to_k(3) = 6
+            self.assertEqual(f(3), [1, 2, 6])
+
+    def test_f_example_case(self):
+            # Test the example given in the problem description.
+            # This covers various calls to sum_up_to_k and factorial.
+            self.assertEqual(f(5), [1, 2, 6, 24, 15])
+
+    def test_factorial_k_one(self):
+            # Direct test for factorial(1).
+            # Ensures the factorial function is directly exercised for its base case.
+            self.assertEqual(factorial(1), 1)
+
+    def test_factorial_k_five(self):
+            # Direct test for factorial(5).
+            # Ensures the factorial function's loop and multiplication logic are covered.
+            self.assertEqual(factorial(5), 120)
+
+    def test_sum_up_to_k_k_one(self):
+            # Direct test for sum_up_to_k(1).
+            # Ensures the sum_up_to_k function is directly exercised for its base case.
+            self.assertEqual(sum_up_to_k(1), 1)
+
+    def test_sum_up_to_k_k_five(self):
+            # Direct test for sum_up_to_k(5).
+            # Ensures the sum_up_to_k function's formula is correctly applied for larger numbers.
+            self.assertEqual(sum_up_to_k(5), 15)
 # To run these tests, you would typically have the 'f' function defined
 # and then use:
 # if __name__ == '__main__':

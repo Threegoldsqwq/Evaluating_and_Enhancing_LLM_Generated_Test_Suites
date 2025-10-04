@@ -45,3 +45,23 @@ class TestChangeBase(unittest.TestCase):
     def test_larger_number_mixed_base(self):
         # Test case: A larger number with a non-binary, non-ternary base
         self.assertEqual(change_base(100, 4), "1210") # 1*4^3 + 2*4^2 + 1*4^1 + 0*4^0 = 64 + 32 + 4 + 0 = 100
+    def test_x_is_zero(self):
+            # This test case specifically covers the 'if x == 0:' branch,
+            # which is indicated as partially covered or uncovered by line 1
+            # in the coverage feedback.
+            self.assertEqual(change_base(0, 2), "0")
+            self.assertEqual(change_base(0, 7), "0")
+            self.assertEqual(change_base(0, 9), "0")
+
+    def test_x_is_one(self):
+            # Covers the edge case where x is 1, resulting in a single digit.
+            self.assertEqual(change_base(1, 2), "1")
+            self.assertEqual(change_base(1, 9), "1")
+
+    def test_largest_allowed_base(self):
+            # Tests with the largest base less than 10 (base=9).
+            self.assertEqual(change_base(9, 9), "10")
+            self.assertEqual(change_base(10, 9), "11")
+            self.assertEqual(change_base(17, 9), "18") # 1*9 + 8 = 17
+            self.assertEqual(change_base(8, 9), "8") # Single digit conversion
+            self.assertEqual(change_base(80, 9), "88") # 8*9 + 8 = 72 + 8 = 80

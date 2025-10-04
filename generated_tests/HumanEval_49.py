@@ -47,6 +47,61 @@ class TestModp(unittest.TestCase):
         # 1024 = 60 * 17 + 4, so 1024 % 17 = 4.
         self.assertEqual(modp(10, 17), 4)
 
+    def test_p_is_one(self):
+            # When p is 1, any number modulo 1 is 0.
+            self.assertEqual(self.solution(0, 1), 0)
+            self.assertEqual(self.solution(5, 1), 0)
+            self.assertEqual(self.solution(1000, 1), 0)
+
+    def test_n_is_one(self):
+            # When n is 1, the result is 2 % p.
+            self.assertEqual(self.solution(1, 5), 2)
+            self.assertEqual(self.solution(1, 2), 0)
+            self.assertEqual(self.solution(1, 10), 2)
+
+    def test_p_is_two(self):
+            # Test specific cases for p = 2.
+            self.assertEqual(self.solution(0, 2), 1) # 2^0 % 2 = 1 % 2 = 1
+            self.assertEqual(self.solution(1, 2), 0) # 2^1 % 2 = 2 % 2 = 0
+            self.assertEqual(self.solution(5, 2), 0) # 2^5 % 2 = 32 % 2 = 0
+
+    def test_result_is_zero(self):
+            # Test cases where the result of the modulo operation is 0.
+            # This happens when p is a power of 2 and n is sufficiently large.
+            self.assertEqual(self.solution(2, 4), 0) # 2^2 % 4 = 4 % 4 = 0
+            self.assertEqual(self.solution(3, 4), 0) # 2^3 % 4 = 8 % 4 = 0
+            self.assertEqual(self.solution(3, 8), 0) # 2^3 % 8 = 8 % 8 = 0
+
+    def test_larger_n_small_p(self):
+            # Test with a large n and a small p, ensuring modular exponentiation works.
+            self.assertEqual(self.solution(1000, 3), 1) # 2^1000 % 3 = ((-1)^1000) % 3 = 1 % 3 = 1
+            self.assertEqual(self.solution(1000, 5), 1) # Cycle 2,4,3,1 for 2^n % 5. 1000 % 4 = 0, so result is 1.
+
+    def test_non_prime_p(self):
+            # Test with a non-prime modulus p.
+            self.assertEqual(self.solution(4, 6), 4) # 2^4 % 6 = 16 % 6 = 4
+            self.assertEqual(self.solution(5, 9), 5) # 2^5 % 9 = 32 % 9 = 5
+
+    def test_negative_n_raises_error(self):
+            # The docstring states n is "non-negative". Test that negative n raises ValueError.
+            with self.assertRaises(ValueError):
+                self.solution(-1, 5)
+            with self.assertRaises(ValueError):
+                self.solution(-10, 101)
+
+    def test_p_is_zero_raises_error(self):
+            # The docstring states p is "positive". Test that p=0 raises ValueError.
+            with self.assertRaises(ValueError):
+                self.solution(5, 0)
+            with self.assertRaises(ValueError):
+                self.solution(0, 0)
+
+    def test_p_is_negative_raises_error(self):
+            # The docstring states p is "positive". Test that negative p raises ValueError.
+            with self.assertRaises(ValueError):
+                self.solution(5, -5)
+            with self.assertRaises(ValueError):
+                self.solution(10, -1)
 # Assume the modp function is defined elsewhere for these tests to run.
 # For example:
 # def modp(n, p):

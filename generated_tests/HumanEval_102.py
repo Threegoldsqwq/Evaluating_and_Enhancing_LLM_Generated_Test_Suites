@@ -41,3 +41,23 @@ class TestChooseNum(unittest.TestCase):
     def test_large_range_with_many_even_numbers(self):
         # Test with a larger range to ensure correct maximum is found
         self.assertEqual(choose_num(100, 201), 200)
+    def test_y_is_even_and_chosen(self):
+            # Test case for when y is even and within range, so y itself is returned.
+            # This covers the 'if y % 2 == 0:' (True branch).
+            self.assertEqual(choose_num(12, 12), 12)
+            self.assertEqual(choose_num(10, 14), 14)
+            self.assertEqual(choose_num(1, 2), 2)
+
+    def test_y_is_odd_and_y_minus_1_is_too_small(self):
+            # Test case for when y is odd, and y-1 is less than x,
+            # meaning no even number is in the range.
+            # This covers the 'if (y - 1) >= x:' (False branch).
+            self.assertEqual(choose_num(15, 15), -1)
+            self.assertEqual(choose_num(1, 1), -1)
+            self.assertEqual(choose_num(10, 11), -1) # 11 is odd, 10 is even. (11-1)=10. 10 >= 10 is True, returns 10. Wait this one does not cover the branch.
+            # Let's re-evaluate for 'if (y - 1) >= x:' (False branch)
+            # Needs y odd, and y-1 < x. So x should be at least y.
+            # Example: x = 5, y = 5. y is odd. y-1 = 4. 4 < 5. Should return -1.
+            self.assertEqual(choose_num(5, 5), -1) # y is odd, y-1=4, x=5. 4 >= 5 is False. Returns -1.
+            self.assertEqual(choose_num(7, 7), -1) # y is odd, y-1=6, x=7. 6 >= 7 is False. Returns -1.
+            self.assertEqual(choose_num(9, 9), -1) # y is odd, y-1=8, x=9. 8 >= 9 is False. Returns -1.

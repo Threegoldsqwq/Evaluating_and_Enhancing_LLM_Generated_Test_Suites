@@ -72,3 +72,7 @@ class TestSelectWords(unittest.TestCase):
         # "Hello": H,l,l (3)
         # "world": w,r,l,d (4)
         self.assertEqual(select_words("  Hello   world  ", 4), ["world"])
+    def test_empty_string_input(self):
+            # Covers line 1: `if not s: return []`
+            self.assertEqual(self.solution("", 0), [])
+            self.assertEqual(self.solution("", 5), [])

@@ -82,3 +82,44 @@ class TestSortThird(unittest.TestCase):
         # Sorted values: [0, 1, 4]
         # Result: [0, 1, 2, 1, 5, 6, 4] (Note l[1] and l[3] both become 1, but for different reasons)
         self.assertEqual(sort_third([4, 1, 2, 1, 5, 6, 0]), [0, 1, 2, 1, 5, 6, 4])
+    def test_empty_list(self):
+            # Tests the behavior with an empty input list.
+            # Covers the case where loops for collecting and placing values are not entered.
+            self.assertEqual(self.solution.sort_third([]), [])
+
+    def test_list_with_few_elements(self):
+            # Tests lists with fewer than 3 elements, where only index 0 is divisible by 3.
+            # This ensures the logic handles small lists correctly without errors.
+            self.assertEqual(self.solution.sort_third([5]), [5])
+            self.assertEqual(self.solution.sort_third([5, 2]), [5, 2])
+            self.assertEqual(self.solution.sort_third([5, 2, 3]), [5, 2, 3])
+
+    def test_already_sorted_third_indices(self):
+            # Verifies correctness when elements at 3-divisible indices are already in sorted order.
+            # The function should return the list unchanged in this scenario.
+            input_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            expected_output = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            self.assertEqual(self.solution.sort_third(input_list), expected_output)
+
+    def test_unsorted_third_indices(self):
+            # Core test case where elements at 3-divisible indices need sorting.
+            # Covers the sorting logic and re-placement of values.
+            input_list = [7, 2, 1, 4, 5, 8, 3, 9, 6, 10]
+            # Original values at indices 0, 3, 6, 9: 7, 4, 3, 10
+            # Sorted values: 3, 4, 7, 10
+            expected_output = [3, 2, 1, 4, 5, 8, 7, 9, 6, 10]
+            self.assertEqual(self.solution.sort_third(input_list), expected_output)
+
+    def test_mixed_values_negatives_zeros_duplicates(self):
+            # Tests with a diverse set of values including negatives, zeros, and duplicates.
+            # This checks the sorting algorithm's robustness with different number types.
+            input_list = [0, 1, -1, 2, -2, 3, 0, -5, 5, 4, -10, 11, -15, 13, 14, 15]
+            # Indices 0, 3, 6, 9, 12, 15
+            # Values at these indices: 0, 2, 0, 4, -15, 15
+            # Sorted values: -15, 0, 0, 2, 4, 15
+            expected_output = [-15, 1, -1, 0, -2, 3, 0, -5, 5, 2, -10, 11, 4, 13, 14, 15]
+            self.assertEqual(self.solution.sort_third(input_list), expected_output)
+
+    def test_single_element_list(self):
+            # A specific edge case for a list with just one element.
+            self.assertEqual(self.solution.sort_third([42]), [42])

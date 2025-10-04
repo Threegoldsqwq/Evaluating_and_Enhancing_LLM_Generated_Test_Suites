@@ -55,3 +55,60 @@ class TestIsNested(unittest.TestCase):
     #
     # def test_12_unbalanced_without_second_open(self):
     #     self.assertFalse(is_nested('[[]')) # Requires 4 brackets
+    def test_empty_string(self):
+            # Test case: Empty string should return False as no brackets are present.
+            # This ensures the 'for' loop is correctly handled when the input is empty.
+            self.assertFalse(is_nested(''))
+
+    def test_single_open_bracket(self):
+            # Test case: Single opening bracket. Should not be nested.
+            self.assertFalse(is_nested('['))
+
+    def test_single_close_bracket(self):
+            # Test case: Single closing bracket. Should not be nested.
+            # This specifically covers the path where char == ']' and state == 0 (initial state).
+            self.assertFalse(is_nested(']'))
+
+    def test_simple_non_nested_pair(self):
+            # Test case: A simple non-nested pair "[]".
+            # This specifically covers the path where char == ']' and state == 1 (after first '[').
+            self.assertFalse(is_nested('[]'))
+
+    def test_two_open_brackets_no_close(self):
+            # Test case: Two opening brackets "[[". Should not be nested.
+            # This covers the state transitions 0 -> 1 -> 2.
+            self.assertFalse(is_nested('[['))
+
+    def test_three_open_brackets_no_close(self):
+            # Test case: Three opening brackets "[[[". Should not be nested.
+            # This covers the implicit branch where char == '[' and state is already 2 (or 3).
+            # Specifically, after processing "[[" (state becomes 2), another '[' keeps state at 2.
+            self.assertFalse(is_nested('[[['))
+
+    def test_open_open_close_open(self):
+            # Test case: [[][ - tests a sequence that progresses through states, then hits an '['
+            # when state is 3. This covers the implicit branch where char == '[' and state is 3.
+            self.assertFalse(is_nested('[[]['))
+
+    def test_two_non_nested_pairs(self):
+            # Test case: [][], a sequence of two separate valid bracket pairs.
+            # This progresses through states but never finds the final ']' in state 3.
+            self.assertFalse(is_nested('[][]'))
+
+    def test_nested_with_leading_and_trailing_noise(self):
+            # Test case: `][[][]]` - A valid nested sequence `[[]]` exists within noise.
+            # This ensures the state machine correctly identifies the nested pattern
+            # even with preceding/succeeding non-relevant brackets.
+            # This test exercises various state transitions including `char == ']'` when state is 0,
+            # and `char == '['` when state is 1, and eventually `char == ']'` when state is 3 for success.
+            self.assertTrue(is_nested('][[][]]'))
+
+    def test_more_complex_nested_pattern(self):
+            # Test case: `[[[[]]]]` - A more complex nested pattern that definitely contains `[[]]`.
+            # This tests the ability to find the pattern amidst more brackets.
+            self.assertTrue(is_nested('[[[[]]]]'))
+
+    def test_interspersed_non_matching_brackets(self):
+            # Test case: `[[]]][[` - contains a nested `[[]]` but also other brackets that don't contribute.
+            # Ensures that once `True` is returned, the function exits immediately.
+            self.assertTrue(is_nested('[[]]][['))

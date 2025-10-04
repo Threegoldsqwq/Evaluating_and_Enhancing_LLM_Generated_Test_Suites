@@ -45,6 +45,58 @@ class TestIntersperse(unittest.TestCase):
             [1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10]
         )
 
+    def test_intersperse_with_none_delimiter(self):
+            # Test with None as a delimiter
+            numbers = [1, 2, 3]
+            delimiter = None
+            expected = [1, None, 2, None, 3]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_with_float_delimiter(self):
+            # Test with a float as a delimiter
+            numbers = [10, 20]
+            delimiter = 3.14
+            expected = [10, 3.14, 20]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_list_of_none(self):
+            # Test with a list containing None values
+            numbers = [None, None]
+            delimiter = 'X'
+            expected = [None, 'X', None]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_list_of_floats(self):
+            # Test with a list containing float values
+            numbers = [1.1, 2.2, 3.3]
+            delimiter = 0
+            expected = [1.1, 0, 2.2, 0, 3.3]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_list_of_mixed_types(self):
+            # Test with a list containing mixed types and a boolean delimiter
+            numbers = [1, 'two', 3.0, None, True]
+            delimiter = False
+            expected = [1, False, 'two', False, 3.0, False, None, False, True]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_large_list(self):
+            # Test with a large list to ensure correctness with many elements
+            numbers = list(range(1000))
+            delimiter = -1
+            expected = []
+            for i, num in enumerate(numbers):
+                expected.append(num)
+                if i < len(numbers) - 1:
+                    expected.append(delimiter)
+            self.assertEqual(self.solution(numbers, delimiter), expected)
+
+    def test_intersperse_negative_and_zero_numbers(self):
+            # Test with a list containing negative numbers and zero
+            numbers = [-5, 0, 5]
+            delimiter = 99
+            expected = [-5, 99, 0, 99, 5]
+            self.assertEqual(self.solution(numbers, delimiter), expected)
 # Assuming the 'intersperse' function is defined elsewhere, for example:
 # def intersperse(numbers, delimiter):
 #     if not numbers:

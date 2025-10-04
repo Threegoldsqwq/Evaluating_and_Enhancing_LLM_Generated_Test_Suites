@@ -80,3 +80,51 @@ class TestGetRow(unittest.TestCase):
         x = 0
         expected = [(0, 1), (1, 2), (2, 0)]
         self.assertEqual(get_row(lst, x), expected)
+    def test_single_row_multiple_x(self):
+            # Test case with a single row where x appears multiple times
+            lst = [[2, 4, 2, 8, 2]]
+            x = 2
+            expected_output = [(0, 4), (0, 2), (0, 0)]
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_x_is_zero(self):
+            # Test case where the target value x is 0, and appears in multiple rows
+            lst = [[0, 1, 0], [2, 0, 3], [0]]
+            x = 0
+            expected_output = [(0, 2), (0, 0), (1, 1), (2, 0)]
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_negative_numbers(self):
+            # Test case with negative numbers in the list and x is negative
+            lst = [[-1, -5, -1], [-10, -1], [1, 2, -1]]
+            x = -1
+            expected_output = [(0, 2), (0, 0), (1, 1), (2, 2)]
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_list_with_only_empty_sublists(self):
+            # Test case with a list containing only empty sublists
+            lst = [[], [], []]
+            x = 5
+            expected_output = []
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_all_elements_are_x(self):
+            # Test case where all elements in a multi-dimensional list are x
+            lst = [[7, 7], [7, 7]]
+            x = 7
+            expected_output = [(0, 1), (0, 0), (1, 1), (1, 0)]
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_x_not_found_in_ragged_list(self):
+            # Test case with a ragged list where x is not present
+            lst = [[1, 2, 3], [4], [5, 6, 7, 8], [9]]
+            x = 10
+            expected_output = []
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)
+
+    def test_large_list_single_x(self):
+            # Test with a larger list but only one occurrence of x
+            lst = [[i for i in range(100)], [i for i in range(100, 200)], [i for i in range(200, 300)]]
+            x = 150
+            expected_output = [(1, 50)]
+            self.assertEqual(self.solution.get_row(lst, x), expected_output)

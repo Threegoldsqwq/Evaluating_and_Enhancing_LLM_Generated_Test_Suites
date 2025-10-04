@@ -99,3 +99,48 @@ class TestMatchParens(unittest.TestCase):
         # s1 = '(((' (balance 3, min_bal_so_far 0)
         # s2 = ')))' (balance -3, min_bal_so_far -3)
         # s1+s2 = '((()))': bal1+bal2=0, min_bal1>=0, bal1+min_bal2 = 3+(-3)=0. All conditions met.
+    def test_is_good_empty_string(self):
+            # Covers the case where the loop is not entered, and final balance is 0.
+            self.assertTrue(is_good(""))
+
+    def test_is_good_simple_balanced(self):
+            # Covers entering the loop, incrementing/decrementing, and final balance is 0.
+            self.assertTrue(is_good("()"))
+            self.assertTrue(is_good("(())"))
+            self.assertTrue(is_good("()(())"))
+
+    def test_is_good_unbalanced_early_exit(self):
+            # Covers the 'if balance < 0' condition (line 15 in original code) returning False.
+            self.assertFalse(is_good(")(("))
+            self.assertFalse(is_good("())"))
+            self.assertFalse(is_good("))))"))
+            self.assertFalse(is_good("(()))(")) # Complex case with early exit
+
+    def test_is_good_unbalanced_final_positive_balance(self):
+            # Covers the 'return balance == 0' (line 20 in original code) being False due to balance > 0.
+            self.assertFalse(is_good("("))
+            self.assertFalse(is_good("(()"))
+            self.assertFalse(is_good("((("))
+            self.assertFalse(is_good("()("))
+
+    def test_match_parens_first_combination_good(self):
+            # Covers 'if is_good(combined1)' (line 33 in original code) returning 'Yes'.
+            self.assertEqual(match_parens(["(", ")"]), "Yes")
+            self.assertEqual(match_parens(["()", ""]), "Yes")
+            self.assertEqual(match_parens(["((", "))"]), "Yes")
+            self.assertEqual(match_parens(["", "()"]), "Yes")
+
+    def test_match_parens_second_combination_good(self):
+            # Covers 'if is_good(combined2)' (line 38 in original code) returning 'Yes'
+            # after combined1 was not good.
+            # Example: s1 = ")", s2 = "("
+            # combined1 = ")(" -> is_good returns False
+            # combined2 = "()" -> is_good returns True
+            self.assertEqual(match_parens([")", "("]), "Yes")
+
+    def test_match_parens_neither_combination_good(self):
+            # Covers 'return 'No'' (line 42 in original code).
+            self.assertEqual(match_parens(["(", "("]), "No")
+            self.assertEqual(match_parens([")", ")"]), "No")
+            self.assertEqual(match_parens(["()(", ")("]), "No") # s1+s2="()()(" (False), s2+s1=")()()" (False)
+            self.assertEqual(match_parens(["(()", "))"]), "No") # s1+s2="(()))" (False), s2+s1="))(( " (False)

@@ -113,6 +113,40 @@ class TestMeanAbsoluteDeviation(unittest.TestCase):
         expected_mad = 0.64
         self.assertAlmostEqual(mean_absolute_deviation(numbers), expected_mad, places=7)
 
+    def test_empty_list_raises_value_error(self):
+            """
+            Test that an empty input list raises a ValueError, covering the
+            'if not numbers:' branch (line 16). This also ensures the function
+            is called, implicitly covering the import and def lines (1 and 3).
+            """
+            with self.assertRaisesRegex(ValueError, "Input list cannot be empty"):
+                mean_absolute_deviation([])
+
+    def test_with_negative_and_positive_numbers(self):
+            """
+            Test MAD calculation with a mix of negative, zero, and positive numbers.
+            This provides a more comprehensive test case for the main calculation
+            path and ensures the function handles various numeric ranges.
+            """
+            data = [-2.0, -1.0, 0.0, 1.0, 2.0]
+            # Mean = (-2 - 1 + 0 + 1 + 2) / 5 = 0 / 5 = 0.0
+            # Absolute differences:
+            # | -2.0 - 0.0 | = 2.0
+            # | -1.0 - 0.0 | = 1.0
+            # |  0.0 - 0.0 | = 0.0
+            # |  1.0 - 0.0 | = 1.0
+            # |  2.0 - 0.0 | = 2.0
+            # Sum of absolute differences = 2.0 + 1.0 + 0.0 + 1.0 + 2.0 = 6.0
+            # MAD = 6.0 / 5 = 1.2
+            self.assertAlmostEqual(mean_absolute_deviation(data), 1.2)
+
+    def test_single_element_list_zero_mad(self):
+            """
+            Test a list with a single element, which should always result in a MAD of 0.
+            This verifies an edge case for the calculation logic.
+            """
+            self.assertAlmostEqual(mean_absolute_deviation([7.7]), 0.0)
+            self.assertAlmostEqual(mean_absolute_deviation([-5.0]), 0.0)
 # To run these tests, you would typically have the mean_absolute_deviation function defined
 # and then use:
 # if __name__ == '__main__':

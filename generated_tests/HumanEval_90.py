@@ -45,6 +45,12 @@ class TestNextSmallest(unittest.TestCase):
         # Test case with only two unique numbers, where the smallest is duplicated
         self.assertEqual(next_smallest([10, 10, 10, 20]), 20)
 
+    def test_empty_list(self):
+            """
+            Test case for an empty input list.
+            This covers the 'if not numbers:' condition which returns None.
+            """
+            self.assertIsNone(next_smallest([]))
 # To run these tests, you would typically have the next_smallest function defined
 # and then use:
 # if __name__ == '__main__':

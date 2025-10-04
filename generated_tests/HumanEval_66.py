@@ -49,3 +49,30 @@ class TestDigitSum(unittest.TestCase):
         # Test case 10: Multiple uppercase characters in a longer string
         # P=80, T=84. Sum = 80+84 = 164
         self.assertEqual(digitSum("PyThon"), 164)
+    def test_string_with_only_lowercase(self):
+            # Covers the branch where the loop runs but char.isupper() is always false
+            self.assertEqual(self.solution.digitSum("hello"), 0)
+
+    def test_string_with_only_digits(self):
+            # Covers the branch where the loop runs but char.isupper() is always false
+            self.assertEqual(self.solution.digitSum("12345"), 0)
+
+    def test_string_with_only_special_characters(self):
+            # Covers the branch where the loop runs but char.isupper() is always false
+            self.assertEqual(self.solution.digitSum("!@#$%^"), 0)
+
+    def test_string_with_mixed_non_uppercase_characters(self):
+            # Covers the branch where the loop runs but char.isupper() is always false
+            self.assertEqual(self.solution.digitSum("a1b2c3!@#"), 0)
+
+    def test_string_with_no_uppercase_and_empty_string(self):
+            # Ensures that the function correctly handles an empty string, returning 0
+            self.assertEqual(self.solution.digitSum(""), 0)
+
+    def test_string_with_unicode_lowercase(self):
+            # Tests with non-ASCII lowercase characters to ensure they are also ignored
+            self.assertEqual(self.solution.digitSum("résumé"), 0)
+
+    def test_string_with_uppercase_and_non_ascii_lowercase(self):
+            # Tests a mix to ensure correct filtering
+            self.assertEqual(self.solution.digitSum("HELLO résumé"), ord('H') + ord('E') + ord('L') + ord('L') + ord('O'))

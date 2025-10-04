@@ -59,3 +59,34 @@ class TestHistogram(unittest.TestCase):
         """Test a case with many unique letters, where each is a max of 1."""
         self.assertDictEqual(histogram('x y z w v u t s r q p o n m l k j i h g f e d'),
                              {'x':1, 'y':1, 'z':1, 'w':1, 'v':1, 'u':1, 't':1, 's':1, 'r':1, 'q':1, 'p':1, 'o':1, 'n':1, 'm':1, 'l':1, 'k':1, 'j':1, 'i':1, 'h':1, 'g':1, 'f':1, 'e':1, 'd':1})
+    def test_string_with_only_spaces(self):
+            # Test case for an input string containing only spaces.
+            # s.split() should return an empty list, triggering the empty list check.
+            self.assertEqual(histogram('   '), {})
+
+    def test_single_letter(self):
+            # Test case for the simplest non-empty input: a single letter.
+            # Ensures correct behavior when there's only one item to count.
+            self.assertEqual(histogram('a'), {'a': 1})
+
+    def test_multiple_identical_letters(self):
+            # Test case for a string with multiple occurrences of only one letter.
+            # Ensures Counter and max_count work correctly in this simplified scenario.
+            self.assertEqual(histogram('x x x x x'), {'x': 5})
+
+    def test_letters_with_varying_spaces(self):
+            # Test case to ensure s.split() correctly handles multiple spaces between letters.
+            self.assertEqual(histogram('a   b c    d'), {'a': 1, 'b': 1, 'c': 1, 'd': 1})
+
+    def test_leading_trailing_spaces(self):
+            # Test case to ensure s.split() correctly handles leading and trailing spaces.
+            self.assertEqual(histogram('  p q r  '), {'p': 1, 'q': 1, 'r': 1})
+
+    def test_multiple_letters_multiple_max_counts(self):
+            # Test a more complex scenario with several letters having the same maximum count,
+            # and others with lower counts.
+            self.assertEqual(histogram('m n o m n p'), {'m': 2, 'n': 2})
+
+    def test_single_max_count_among_many(self):
+            # Test case where one letter has a clearly higher count than all others.
+            self.assertEqual(histogram('a b c d a b a'), {'a': 3})

@@ -68,3 +68,43 @@ class TestParseNestedParens(unittest.TestCase):
         # () () -> 1 (assuming parse handles multiple top-level groups separately for the max of the whole string)
         # ( () ) -> 2
         self.assertEqual(parse_nested_parens('(()()()) (((()))()) ()() (())'), [2, 4, 1, 2])
+    def test_string_with_only_spaces(self):
+            """
+            Test with an input string containing only whitespace.
+            This ensures `paren_string.split()` correctly produces an empty list,
+            leading to the main loop being skipped and an empty result.
+            """
+            self.assertEqual(self.solution('   '), [])
+            self.assertEqual(self.solution('\t\n  \t'), [])
+
+    def test_leading_and_trailing_spaces(self):
+            """
+            Test input strings with significant leading and trailing whitespace.
+            Ensures `paren_string.split()` correctly strips these.
+            """
+            self.assertEqual(self.solution('  (()())  '), [2])
+            self.assertEqual(self.solution('   ()   '), [1])
+            self.assertEqual(self.solution(' \t (()) () \n '), [2, 1])
+
+    def test_multiple_spaces_between_groups(self):
+            """
+            Test input strings with multiple spaces between parenthesis groups.
+            Ensures `paren_string.split()` treats multiple spaces as a single separator.
+            """
+            self.assertEqual(self.solution('(()())   ((()))'), [2, 3])
+            self.assertEqual(self.solution('()     ()     ()'), [1, 1, 1])
+            self.assertEqual(self.solution(' (())  \t  () '), [2, 1])
+
+    def test_malformed_parens_negative_depth_tracking(self):
+            """
+            Test groups that might cause `current_depth` to go negative,
+            while ensuring `max_depth` is still correctly calculated
+            (or remains 0 if no opening parens are encountered before closing ones).
+            """
+            self.assertEqual(self.solution(')('), [0])  # current_depth: 0 -> -1 -> 0, max_depth: 0
+            self.assertEqual(self.solution('(()) ())( (('), [2, 0, 2])
+            # First group: (()) -> max_depth 2
+            # Second group: ))( -> current_depth: 0 -> -1 -> -2 -> -1. max_depth for this group remains 0.
+            # Third group: (( -> current_depth: 0 -> 1 -> 2. max_depth 2.
+            self.assertEqual(self.solution('(()))'), [2]) # current_depth ends at -1, max_depth correctly 2
+            self.assertEqual(self.solution(') ( ( )) )'), [0, 2]) # Split will handle spaces correctly, first group has no max_depth.

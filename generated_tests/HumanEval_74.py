@@ -53,3 +53,46 @@ class TestTotalMatch(unittest.TestCase):
     def test_different_lengths_and_char_counts(self):
         # Test case 10: Lists with different numbers of strings and total characters
         self.assertEqual(total_match(['hello', 'world'], ['a', 'b', 'c', 'd', 'e', 'f', 'g']), ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+    def test_equal_total_chars_non_empty(self):
+            # Test case for when total characters are equal with non-empty lists
+            # This specifically covers the 'else' branch for non-trivial inputs.
+            lst1 = ['abc', 'def']  # Total chars: 3 + 3 = 6
+            lst2 = ['ghi', 'jkl']  # Total chars: 3 + 3 = 6
+            self.assertEqual(self.solution.total_match(lst1, lst2), lst1)
+
+            lst3 = ['hello']       # Total chars: 5
+            lst4 = ['world']       # Total chars: 5
+            self.assertEqual(self.solution.total_match(lst3, lst4), lst3)
+
+    def test_one_list_empty_other_non_empty(self):
+            # Test case where one list is empty and the other is not.
+            # Covers both `lst1` empty and `lst2` empty scenarios.
+            lst1 = []
+            lst2 = ['single']      # Total chars: 6
+            self.assertEqual(self.solution.total_match(lst1, lst2), lst1) # 0 < 6, returns lst1
+
+            lst3 = ['another']     # Total chars: 7
+            lst4 = []
+            self.assertEqual(self.solution.total_match(lst3, lst4), lst4) # 7 > 0, returns lst4 (which is lst4 itself)
+
+    def test_lists_with_empty_strings_inside(self):
+            # Test cases involving lists that contain empty strings.
+            # This ensures len('') is handled correctly and affects total character count.
+            lst1 = ['a', '', 'b']  # Total chars: 1 + 0 + 1 = 2
+            lst2 = ['cd']          # Total chars: 2
+            self.assertEqual(self.solution.total_match(lst1, lst2), lst1) # Equal, returns lst1
+
+            lst3 = ['']            # Total chars: 0
+            lst4 = ['e']           # Total chars: 1
+            self.assertEqual(self.solution.total_match(lst3, lst4), lst3) # 0 < 1, returns lst3
+
+    def test_diverse_string_content_and_lengths(self):
+            # Test with strings containing various characters (numbers, spaces, symbols)
+            # to ensure len() is correctly applied across different string types.
+            lst1 = ['123', 'abc def'] # Total chars: 3 + 7 = 10
+            lst2 = ['test!@#$']      # Total chars: 8
+            self.assertEqual(self.solution.total_match(lst1, lst2), lst2) # 10 > 8, returns lst2
+
+            lst3 = ['short']         # Total chars: 5
+            lst4 = ['much longer string'] # Total chars: 18
+            self.assertEqual(self.solution.total_match(lst3, lst4), lst3) # 5 < 18, returns lst3

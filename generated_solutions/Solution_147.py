@@ -1,7 +1,7 @@
 import math
 
-class Solution:
-    def solve(self, n: int) -> int:
+
+def get_max_triples(self, n: int) -> int:
         # Step 1: Analyze a[x] = x*x - x + 1 modulo 3.
         # a[x] = x*(x-1) + 1
         #

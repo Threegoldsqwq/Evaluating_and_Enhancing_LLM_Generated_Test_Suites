@@ -108,6 +108,79 @@ class TestSortArray(unittest.TestCase):
         expected_output = sorted(input_array, key=_get_sort_key)
         self.assertEqual(sort_array(input_array), expected_output) # Expected: [8, 5, 6, 9, 10, 7]
 
+    def test_empty_array(self):
+            self.assertEqual(sort_array([]), [])
+
+    def test_single_element_arrays(self):
+            self.assertEqual(sort_array([0]), [0])
+            self.assertEqual(sort_array([1]), [1])
+            self.assertEqual(sort_array([-1]), [-1])
+
+    def test_mixed_positive_negative_zero(self):
+            # Exercises both branches of get_ones_count within a single sort_array call.
+            # Also tests various bit counts and secondary sorting.
+            # 0 (0b0): (0, 0)
+            # 1 (0b1): (1, 1)
+            # -1 (abs 1, 0b1): (1, -1)
+            # 2 (0b10): (1, 2)
+            # -2 (abs 2, 0b10): (1, -2)
+            # 3 (0b11): (2, 3)
+            # -3 (abs 3, 0b11): (2, -3)
+            # 4 (0b100): (1, 4)
+            # -4 (abs 4, 0b100): (1, -4)
+            expected = [0, -4, -2, -1, 1, 2, 4, -3, 3]
+            self.assertEqual(sort_array([0, 1, -1, 2, -2, 3, -3, 4, -4]), expected)
+
+    def test_all_same_bit_count(self):
+            # All numbers here have 1 'one' in their binary (or abs) representation.
+            # Tests the secondary sorting by decimal value.
+            # -8 (abs 8, 0b1000): (1, -8)
+            # -4 (abs 4, 0b100): (1, -4)
+            # -2 (abs 2, 0b10): (1, -2)
+            # -1 (abs 1, 0b1): (1, -1)
+            # 1 (0b1): (1, 1)
+            # 2 (0b10): (1, 2)
+            # 4 (0b100): (1, 4)
+            # 8 (0b1000): (1, 8)
+            expected = [-8, -4, -2, -1, 1, 2, 4, 8]
+            self.assertEqual(sort_array([1, 2, 4, 8, -1, -2, -4, -8]), expected)
+
+    def test_complex_scenario(self):
+            # A mix of numbers with various bit counts and values, positive and negative.
+            # 5 (0b101): (2, 5)
+            # -6 (abs 6, 0b110): (2, -6)
+            # 7 (0b111): (3, 7)
+            # -8 (abs 8, 0b1000): (1, -8)
+            # 9 (0b1001): (2, 9)
+            # 10 (0b1010): (2, 10)
+            # -11 (abs 11, 0b1011): (3, -11)
+            # 12 (0b1100): (2, 12)
+            #
+            # Grouped by bit count then value:
+            # 1 one: [-8]
+            # 2 ones: [-6, 5, 9, 10, 12]
+            # 3 ones: [-11, 7]
+            expected = [-8, -6, 5, 9, 10, 12, -11, 7]
+            self.assertEqual(sort_array([5, -6, 7, -8, 9, 10, -11, 12]), expected)
+
+    def test_repeated_numbers(self):
+            # Tests sorting with duplicate values.
+            # 1 (0b1): (1, 1)
+            # 2 (0b10): (1, 2)
+            # 5 (0b101): (2, 5)
+            # 5 (0b101): (2, 5)
+            expected = [1, 2, 5, 5]
+            self.assertEqual(sort_array([5, 1, 5, 2]), expected)
+
+    def test_large_numbers(self):
+            # Test with larger numbers to ensure bit_count handles them.
+            # 1023 (0b1111111111): 10 ones
+            # 511 (0b111111111): 9 ones
+            # -1023 (abs 1023): 10 ones
+            # -511 (abs 511): 9 ones
+            # 1024 (0b10000000000): 1 one
+            expected = [1024, -511, 511, -1023, 1023]
+            self.assertEqual(sort_array([1023, 511, -1023, -511, 1024]), expected)
 # If you want to run these tests directly from this file
 if __name__ == '__main__':
     # This is a placeholder for the actual function.

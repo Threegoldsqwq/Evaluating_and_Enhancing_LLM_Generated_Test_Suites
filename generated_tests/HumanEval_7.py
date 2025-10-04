@@ -41,5 +41,38 @@ class TestFilterBySubstring(unittest.TestCase):
     def test_list_with_duplicates(self):
         self.assertEqual(filter_by_substring(['test', 'another test', 'test', 'final'], 'test'), ['test', 'another test', 'test'])
 
+    def test_case_sensitivity(self):
+            # Test that the filtering is case-sensitive
+            self.assertEqual(self.solution(['Apple', 'apple', 'banana'], 'apple'), ['apple'])
+            self.assertEqual(self.solution(['Hello', 'World'], 'hello'), [])
+            self.assertEqual(self.solution(['hello', 'world'], 'WORLD'), [])
+
+    def test_substring_as_suffix(self):
+            # Test when the substring appears at the end of a string
+            self.assertEqual(self.solution(['testing', 'baking', 'running'], 'ing'), ['testing', 'baking', 'running'])
+            self.assertEqual(self.solution(['cat', 'dog', 'rat'], 'at'), ['cat', 'rat'])
+
+    def test_substring_appearing_multiple_times_in_string(self):
+            # Test when the substring appears multiple times within a single string
+            self.assertEqual(self.solution(['ababab', 'acac'], 'aba'), ['ababab'])
+            self.assertEqual(self.solution(['mississippi', 'pipi'], 'iss'), ['mississippi'])
+            self.assertEqual(self.solution(['aaaaa', 'bbbbb'], 'aa'), ['aaaaa'])
+
+    def test_list_with_empty_strings_and_non_empty_substring(self):
+            # Test cases where the input list contains empty strings and the substring is not empty
+            self.assertEqual(self.solution(['', 'test', '', 'another'], 'test'), ['test'])
+            self.assertEqual(self.solution(['', 'a', '', 'b'], 'a'), ['a'])
+            self.assertEqual(self.solution(['', 'a', '', 'b'], 'x'), []) # No match
+
+    def test_single_element_list(self):
+            # Test with a list containing only one element, both matching and not matching
+            self.assertEqual(self.solution(['unique'], 'uni'), ['unique'])
+            self.assertEqual(self.solution(['unique'], 'xyz'), [])
+
+    def test_strings_with_special_characters(self):
+            # Test with strings and substrings containing special characters
+            self.assertEqual(self.solution(['foo-bar', 'baz_qux'], '-'), ['foo-bar'])
+            self.assertEqual(self.solution(['hello@world.com', 'test.com'], '.com'), ['hello@world.com', 'test.com'])
+            self.assertEqual(self.solution(['123', '456'], '2'), ['123'])
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)

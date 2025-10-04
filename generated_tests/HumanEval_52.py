@@ -41,3 +41,36 @@ class TestBelowThreshold(unittest.TestCase):
     def test_mixed_numbers_some_above_negative_threshold(self):
         # Mixed numbers, some above or equal to a negative threshold
         self.assertFalse(below_threshold([-10, -5, 0, 3], -5))
+    def test_single_element_below_threshold(self):
+            self.assertTrue(below_threshold([5], 6))
+
+    def test_single_element_at_threshold(self):
+            self.assertFalse(below_threshold([6], 6))
+
+    def test_single_element_above_threshold(self):
+            self.assertFalse(below_threshold([7], 6))
+
+    def test_middle_element_above_threshold(self):
+            self.assertFalse(below_threshold([1, 2, 10, 4, 5], 5))
+
+    def test_all_elements_just_below(self):
+            self.assertTrue(below_threshold([9, 9, 9], 10))
+
+    def test_all_elements_at_threshold(self):
+            self.assertFalse(below_threshold([10, 10, 10], 10))
+
+    def test_negative_numbers_all_below(self):
+            self.assertTrue(below_threshold([-3, -2, -1], 0))
+
+    def test_negative_numbers_at_threshold(self):
+            self.assertFalse(below_threshold([-5, -2, -1], -2))
+
+    def test_negative_numbers_above_threshold(self):
+            self.assertFalse(below_threshold([-5, -1, 0], -2))
+
+    def test_positive_numbers_negative_threshold(self):
+            # All numbers are above the negative threshold, so it should be False
+            self.assertFalse(below_threshold([1, 5, 10], -5))
+
+    def test_zero_in_list_threshold_zero(self):
+            self.assertFalse(below_threshold([-1, 0, 1], 0))

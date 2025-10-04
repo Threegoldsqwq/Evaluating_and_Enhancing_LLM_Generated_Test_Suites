@@ -55,5 +55,27 @@ class TestRollingMax(unittest.TestCase):
         """Test a case where the initial element is the maximum, followed by smaller numbers."""
         self.assertEqual(rolling_max([20, 10, 5, 15, 8]), [20, 20, 20, 20, 20])
 
+    def test_empty_list_coverage(self):
+            # This test case specifically targets the 'if not numbers:' condition.
+            # It ensures the 'True' branch is taken when an empty list is provided,
+            # addressing the partial branch coverage on line 1.
+            self.assertEqual(rolling_max([]), [])
+
+    def test_all_identical_elements(self):
+            # Checks behavior when all elements in the list are the same.
+            self.assertEqual(rolling_max([5, 5, 5, 5, 5]), [5, 5, 5, 5, 5])
+
+    def test_strictly_decreasing_sequence(self):
+            # Verifies the rolling maximum for a list where numbers are strictly decreasing.
+            # The rolling max should remain at the first element's value until a larger one appears (which it won't here).
+            self.assertEqual(rolling_max([10, 8, 6, 4, 2]), [10, 10, 10, 10, 10])
+
+    def test_mixed_positive_negative_and_zero(self):
+            # Tests a more complex scenario with positive, negative, and zero values.
+            self.assertEqual(rolling_max([-5, 0, -2, 10, 3, -1]), [-5, 0, 0, 10, 10, 10])
+
+    def test_single_zero_element(self):
+            # A single element list with zero.
+            self.assertEqual(rolling_max([0]), [0])
 if __name__ == '__main__':
     unittest.main()

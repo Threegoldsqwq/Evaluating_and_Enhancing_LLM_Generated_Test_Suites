@@ -41,3 +41,10 @@ class TestIsHappy(unittest.TestCase):
     def test_longer_happy_string_complex(self):
         # Length > 3, all consecutive 3 letters are distinct, more complex pattern
         self.assertTrue(is_happy("xzyxw"))
+    def test_edge_cases_short_strings(self):
+            # This test specifically targets the 'if len(s) < 3:' condition.
+            # It ensures that strings with length 0, 1, or 2 correctly return False,
+            # thereby covering the 'True' branch of this condition and the subsequent 'return False'.
+            self.assertFalse(is_happy(""), "An empty string should not be happy.")
+            self.assertFalse(is_happy("a"), "A single character string should not be happy.")
+            self.assertFalse(is_happy("ab"), "A two character string should not be happy.")

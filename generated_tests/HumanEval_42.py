@@ -35,3 +35,19 @@ class TestIncrList(unittest.TestCase):
         # However, a robust implementation should handle them or specify type constraints.
         # For this exercise, I'll assume it handles numeric types generally.
         self.assertEqual(incr_list([1.0, 2.5, 3.7]), [2.0, 3.5, 4.7])
+    def test_incr_list_empty(self):
+            # Test with an empty list
+            self.assertEqual(self.solution.incr_list([]), [])
+
+    def test_incr_list_single_element(self):
+            # Test with a list containing a single element
+            self.assertEqual(self.solution.incr_list([0]), [1])
+            self.assertEqual(self.solution.incr_list([7]), [8])
+
+    def test_incr_list_negative_numbers(self):
+            # Test with a list containing negative numbers
+            self.assertEqual(self.solution.incr_list([-1, -5, -10]), [0, -4, -9])
+
+    def test_incr_list_mixed_numbers(self):
+            # Test with a list containing mixed positive, negative, and zero numbers
+            self.assertEqual(self.solution.incr_list([-2, 0, 2]), [-1, 1, 3])

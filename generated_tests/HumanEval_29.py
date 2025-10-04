@@ -47,3 +47,31 @@ class TestFilterByPrefix(unittest.TestCase):
         """Test with a prefix that is longer than some or all strings in the list."""
         self.assertEqual(filter_by_prefix(['a', 'ab', 'abc'], 'abcd'), [])
         self.assertEqual(filter_by_prefix(['longstring'], 'longerprefix'), [])
+    def test_filter_by_empty_prefix_all_match(self):
+            # Test case where the prefix is an empty string, expecting all strings to match.
+            self.assertEqual(self.solution(['apple', 'banana', 'cherry'], ''), ['apple', 'banana', 'cherry'])
+
+    def test_filter_by_empty_prefix_with_empty_string_in_list(self):
+            # Test case where the prefix is empty, and the list contains an empty string.
+            self.assertEqual(self.solution(['', 'hello', 'world'], ''), ['', 'hello', 'world'])
+
+    def test_filter_all_strings_match_prefix(self):
+            # Test case where all strings in the list match the given prefix.
+            self.assertEqual(self.solution(['app', 'apple', 'apply'], 'ap'), ['app', 'apple', 'apply'])
+
+    def test_filter_list_with_empty_string_and_valid_prefix(self):
+            # Test case with a list containing an empty string, where some other strings match the prefix.
+            self.assertEqual(self.solution(['hello', '', 'hi', 'howdy'], 'h'), ['hello', 'hi', 'howdy'])
+
+    def test_filter_prefix_longer_than_any_string(self):
+            # Test case where the prefix is longer than any string in the list, expecting no matches.
+            self.assertEqual(self.solution(['a', 'b', 'c'], 'abc'), [])
+
+    def test_filter_prefix_exactly_matching_a_string(self):
+            # Test case where the prefix itself is a full string in the list.
+            self.assertEqual(self.solution(['test', 'testing', 'toast'], 'test'), ['test', 'testing'])
+
+    def test_filter_case_sensitivity(self):
+            # Test case to confirm case sensitivity (Python's startswith is case-sensitive).
+            self.assertEqual(self.solution(['Apple', 'apple', 'apricot'], 'a'), ['apple', 'apricot'])
+            self.assertEqual(self.solution(['Apple', 'apple', 'apricot'], 'A'), ['Apple'])

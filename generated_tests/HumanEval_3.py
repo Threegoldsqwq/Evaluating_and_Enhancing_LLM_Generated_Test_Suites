@@ -52,3 +52,25 @@ class TestBelowZero(unittest.TestCase):
         # The function should return True at the first instance it goes below.
         # Expected: True
         self.assertTrue(below_zero([5, -10, 20, -30])) # 0 -> 5 -> -5 (returns True here)
+    def test_single_negative_operation(self):
+            # Test case: A single negative operation immediately makes balance below zero.
+            self.assertTrue(self.solution.below_zero([-1]))
+
+    def test_all_zero_operations(self):
+            # Test case: All operations are zero, balance never changes and stays at zero.
+            self.assertFalse(self.solution.below_zero([0, 0, 0, 0]))
+
+    def test_balance_hits_zero_then_goes_negative(self):
+            # Test case: Balance reaches zero, then a subsequent operation makes it go below zero.
+            # Balance progression: 5 -> 3 -> 0 -> -1. Should return True.
+            self.assertTrue(self.solution.below_zero([5, -2, -3, -1]))
+
+    def test_balance_hits_zero_then_stays_non_negative(self):
+            # Test case: Balance reaches zero, then subsequent operations keep it at or above zero.
+            # Balance progression: 5 -> 0 -> 1 -> 0. Should return False.
+            self.assertFalse(self.solution.below_zero([5, -5, 1, -1]))
+
+    def test_multiple_consecutive_negative_operations(self):
+            # Test case: All operations are negative, verifying immediate True on the first op.
+            # Balance progression: -1. Should return True.
+            self.assertTrue(self.solution.below_zero([-1, -2, -3]))

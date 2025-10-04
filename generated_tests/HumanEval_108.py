@@ -107,3 +107,68 @@ class TestCountNums(unittest.TestCase):
         # 200 (sum=2+0+0=2>0) -> count
         # -200 (sum=-2+0+0=-2<=0)
         self.assertEqual(count_nums([1000, -1000, 200, -200]), 2)
+    def test_docstring_correction_example(self):
+            # The docstring example count_nums([-12, 12, -3]) is listed as 1.
+            # However, according to the code's logic:
+            # sum_signed_digits(-12) = -1 + 2 = 1 ( > 0, increments count)
+            # sum_signed_digits(12)  = 1 + 2 = 3 ( > 0, increments count)
+            # sum_signed_digits(-3)  = -3        ( <= 0, does not increment)
+            # Therefore, the expected count should be 2.
+            self.assertEqual(count_nums([-12, 12, -3]), 2)
+
+    def test_all_numbers_with_non_positive_sum_of_digits(self):
+            # Test an array where all numbers result in sum_signed_digits <= 0,
+            # ensuring the final count remains 0.
+            arr = [0, -1, -2, -10, -11, -91, -101]
+            # sum_signed_digits(0)    = 0
+            # sum_signed_digits(-1)   = -1
+            # sum_signed_digits(-2)   = -2
+            # sum_signed_digits(-10)  = -1 + 0 = -1
+            # sum_signed_digits(-11)  = -1 + 1 = 0
+            # sum_signed_digits(-91)  = -9 + 1 = -8
+            # sum_signed_digits(-101) = -1 + 0 + 1 = 0
+            self.assertEqual(count_nums(arr), 0)
+
+    def test_mixed_numbers_with_various_sum_outcomes(self):
+            # Test a more complex mix of numbers, including those whose signed digit sum
+            # might be positive, zero, or negative.
+            arr = [-123, -109, 100, -500, 50, -99, 1, -1]
+            # -123: -1+2+3 = 4   (>0) -> count=1
+            # -109: -1+0+9 = 8   (>0) -> count=2
+            # 100:  1+0+0  = 1   (>0) -> count=3
+            # -500: -5+0+0 = -5  (<=0)
+            # 50:   5+0    = 5   (>0) -> count=4
+            # -99:  -9+9   = 0   (<=0)
+            # 1:    1      = 1   (>0) -> count=5
+            # -1:   -1     = -1  (<=0)
+            self.assertEqual(count_nums(arr), 5)
+
+    def test_single_element_array_cases(self):
+            # Test with single-element arrays to ensure proper handling of different cases.
+            self.assertEqual(count_nums([5]), 1)
+            self.assertEqual(count_nums([-5]), 0)
+            self.assertEqual(count_nums([-59]), 1) # sum_signed_digits(-59) = -5 + 9 = 4 (> 0)
+            self.assertEqual(count_nums([0]), 0)
+
+    def test_large_numbers_with_many_digits(self):
+            # Test with very large numbers to ensure the string conversion and
+            # digit summation logic works correctly for multi-digit integers.
+            arr = [
+                123456789123456789,  # sum of digits is large positive
+                -987654321987654321, # -9 + sum(8...1)*2 = -9 + 36*2 = 63 (>0)
+                10000000000000000000000000000000000000000000000000, # sum is 1 (>0)
+                -10000000000000000000000000000000000000000000000000, # sum is -1 (not >0)
+                -120000000000000000000000000000000000000000000000001, # -1+2+...0+1 = 2 (>0)
+                -999999999999999999999999999999999999999999999999999 # -9 + 9*49 = 432 (>0)
+            ]
+            # Expected counts: Yes, Yes, Yes, No, Yes, Yes
+            self.assertEqual(count_nums(arr), 5)
+
+    def test_numbers_with_only_zeros_in_array(self):
+            # Explicitly test an array containing only zeros, exercising the n == 0 branch.
+            self.assertEqual(count_nums([0, 0, 0, 0]), 0)
+
+    def test_empty_array_explicit(self):
+            # Re-confirm the empty array edge case as it's a common initial check.
+            # (This is already in docstring, but good for explicit test.)
+            self.assertEqual(count_nums([]), 0)

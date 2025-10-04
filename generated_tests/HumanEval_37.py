@@ -43,3 +43,5 @@ class TestSortEven(unittest.TestCase):
         input_list = [10, 100, 8, 200, 6, 300, 4, 400, 2, 500, 0, 600]
         expected_list = [0, 100, 2, 200, 4, 300, 6, 400, 8, 500, 10, 600]
         self.assertEqual(sort_even(input_list), expected_list)
+    def test_empty_list(self):
+            self.assertEqual(sort_even([]), [])

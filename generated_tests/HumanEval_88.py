@@ -80,6 +80,30 @@ class TestSortArray(unittest.TestCase):
         expected = [15, 10, 8, 7, 3, 2]
         self.assertEqual(sort_array(arr), expected)
 
+    def test_sort_array_empty(self):
+            # Covers the 'if not arr:' branch (line 5)
+            self.assertEqual(self.solution.sort_array([]), [])
+
+    def test_sort_array_odd_sum_first_last(self):
+            # Covers the 'if elements_sum % 2 != 0:' branch (line 22)
+            # First + Last = 1 + 4 = 5 (odd) -> Ascending sort
+            input_array = [4, 1, 3, 2]
+            expected_output = [1, 2, 3, 4]
+            self.assertEqual(self.solution.sort_array(input_array), expected_output)
+
+    def test_sort_array_even_sum_first_last(self):
+            # Covers the 'else:' branch (line 25)
+            # First + Last = 5 + 1 = 6 (even) -> Descending sort
+            input_array = [5, 2, 8, 1, 3]
+            expected_output = [8, 5, 3, 2, 1]
+            self.assertEqual(self.solution.sort_array(input_array), expected_output)
+
+    def test_sort_array_single_element(self):
+            # Edge case: single element array (sum will always be even)
+            # First + Last = 7 + 7 = 14 (even) -> Descending sort
+            input_array = [7]
+            expected_output = [7]
+            self.assertEqual(self.solution.sort_array(input_array), expected_output)
 # To run the tests, uncomment the following block
 # if __name__ == '__main__':
 #     # Assuming sort_array function is defined elsewhere for testing purposes

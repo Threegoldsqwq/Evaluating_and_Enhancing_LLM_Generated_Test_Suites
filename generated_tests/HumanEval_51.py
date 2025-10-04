@@ -31,3 +31,17 @@ class TestRemoveVowels(unittest.TestCase):
 
     def test_single_consonant(self):
         self.assertEqual(remove_vowels('z'), 'z')
+    def test_all_uppercase_vowels(self):
+            self.assertEqual(remove_vowels('AEIOU'), '')
+
+    def test_string_with_numbers_and_symbols(self):
+            self.assertEqual(remove_vowels('H3ll0 W0rld!'), 'H3ll0 W0rld!')
+
+    def test_mixed_case_complex_string(self):
+            self.assertEqual(remove_vowels('ThIs Is A TeSt StRiNg WiTh MiXeD cAsE'), 'Ths s T StR Ng Wth MxEd cS')
+
+    def test_string_with_spaces_and_punctuation(self):
+            self.assertEqual(remove_vowels('Hello, World! How are you?'), 'Hll, Wrl! Hw r y?')
+
+    def test_string_with_only_consonants_mixed_case(self):
+            self.assertEqual(remove_vowels('BCDFGhjklMNP'), 'BCDFGhjklMNP')

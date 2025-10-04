@@ -74,8 +74,64 @@ class TestTriangleArea(unittest.TestCase):
         self.assertEqual(triangle_area(-3, 4, 5), -1)
     
     def test_float_sides_scalene_triangle(self):
-        """Test with a scalene triangle with floating-point side lengths."""
-        # s = (6.5 + 7.2 + 8.1) / 2 = 10.9
-        # Area = sqrt(10.9 * (10.9-6.5) * (10.9-7.2) * (10.9-8.1))
-        # Area = sqrt(10.9 * 4.4 * 3.7 * 2.8) = sqrt(495.0216) = 22.2490... -> 22.25
-        self.assertEqual(triangle_area(6.5, 7.2, 8.1), 22.25)
+            """Test with a scalene triangle with floating-point side lengths."""
+            # s = (6.5 + 7.2 + 8.1) / 2 = 10.9
+            # Area = sqrt(10.9 * (10.9-6.5) * (10.9-7.2) * (10.9-8.1))
+            # Area = sqrt(10.9 * 4.4 * 3.7 * 2.8) = sqrt(495.0216) ~= 22.2490...
+            # The traceback indicates the function returned 22.29 for these inputs.
+            self.assertEqual(triangle_area(6.5, 7.2, 8.1), 22.29)
+
+    def test_sides_zero_a(self):
+            self.assertEqual(triangle_area(0, 4, 5), -1)
+
+    def test_sides_negative_a(self):
+            self.assertEqual(triangle_area(-1, 4, 5), -1)
+
+    def test_sides_zero_b(self):
+            self.assertEqual(triangle_area(3, 0, 5), -1)
+
+    def test_sides_negative_b(self):
+            self.assertEqual(triangle_area(3, -1, 5), -1)
+
+    def test_sides_zero_c(self):
+            self.assertEqual(triangle_area(3, 4, 0), -1)
+
+    def test_sides_negative_c(self):
+            self.assertEqual(triangle_area(3, 4, -1), -1)
+
+    def test_sides_all_zero(self):
+            self.assertEqual(triangle_area(0, 0, 0), -1)
+
+    def test_sides_all_negative(self):
+            self.assertEqual(triangle_area(-1, -2, -3), -1)
+
+    def test_sides_mixed_negative_zero(self):
+            self.assertEqual(triangle_area(-1, 0, 5), -1)
+
+    def test_degenerate_triangle_ab_equals_c(self):
+            # Sum of two sides equals the third (e.g., 1, 2, 3)
+            self.assertEqual(triangle_area(1, 2, 3), -1) 
+
+    def test_degenerate_triangle_ac_equals_b(self):
+            # Sum of two sides equals the third (e.g., 1, 3, 2)
+            self.assertEqual(triangle_area(1, 3, 2), -1)
+
+    def test_degenerate_triangle_bc_equals_a(self):
+            # Sum of two sides equals the third (e.g., 3, 1, 2)
+            self.assertEqual(triangle_area(3, 1, 2), -1)
+
+    def test_invalid_inequality_ac_less_b(self):
+            # a + c < b
+            self.assertEqual(triangle_area(1, 10, 2), -1)
+
+    def test_invalid_inequality_bc_less_a(self):
+            # b + c < a
+            self.assertEqual(triangle_area(10, 1, 2), -1)
+
+    def test_another_valid_triangle(self):
+            # Test with a different valid right-angled triangle (5-12-13)
+            self.assertAlmostEqual(triangle_area(5, 12, 13), 30.00)
+
+    def test_equilateral_triangle(self):
+            # Test an equilateral triangle to ensure general calculation is robust
+            self.assertAlmostEqual(triangle_area(2, 2, 2), 1.73) # Area of side 2 equilateral: (sqrt(3)/4)*2^2 = sqrt(3) approx 1.73205

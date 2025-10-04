@@ -54,3 +54,49 @@ class TestFlipCase(unittest.TestCase):
     def test_leading_trailing_spaces(self):
         # Test with leading/trailing spaces and mixed content
         self.assertEqual(flip_case('  Test me  '), '  tEST ME  ')
+    def test_single_characters(self):
+            # Test with single lowercase letter
+            self.assertEqual(self.solution.flip_case('a'), 'A')
+            # Test with single uppercase letter
+            self.assertEqual(self.solution.flip_case('Z'), 'z')
+            # Test with single digit
+            self.assertEqual(self.solution.flip_case('5'), '5')
+            # Test with single symbol
+            self.assertEqual(self.solution.flip_case('!'), '!')
+            # Test with single space
+            self.assertEqual(self.solution.flip_case(' '), ' ')
+
+    def test_only_non_alphabetic_characters(self):
+            # String containing only digits
+            self.assertEqual(self.solution.flip_case('1234567890'), '1234567890')
+            # String containing only symbols
+            self.assertEqual(self.solution.flip_case('!@#$%^&*()'), '!@#$%^&*()')
+            # String containing only spaces
+            self.assertEqual(self.solution.flip_case('   '), '   ')
+            # String containing mixed digits, symbols, and spaces
+            self.assertEqual(self.solution.flip_case('1 2 3 ! @ #'), '1 2 3 ! @ #')
+
+    def test_unicode_letters(self):
+            # Test with lowercase Unicode letters
+            self.assertEqual(self.solution.flip_case('résumé'), 'RÉSUMÉ')
+            # Test with uppercase Unicode letters
+            self.assertEqual(self.solution.flip_case('GRÜßE'), 'grüSSe') # 'ß' becomes 'SS' when upper() is applied to lower()
+            # Test with mixed case Unicode letters
+            self.assertEqual(self.solution.flip_case('Ça Va?'), 'cA vA?')
+            # Test with letters that have no case equivalent (should remain unchanged, though unlikely for most script letters)
+            self.assertEqual(self.solution.flip_case('こんにちは'), 'こんにちは') # Japanese hiragana are not cased
+
+    def test_unicode_symbols_and_emojis(self):
+            # Test with strings containing emojis
+            self.assertEqual(self.solution.flip_case('Hello World 👋'), 'hELLO wORLD 👋')
+            self.assertEqual(self.solution.flip_case('PYTHON 😊'), 'python 😊')
+            # Test with mathematical symbols
+            self.assertEqual(self.solution.flip_case('π r² = Area'), 'π R² = aREA')
+            # Test with other non-alphabetic unicode characters
+            self.assertEqual(self.solution.flip_case('© 2023 ABC'), '© 2023 abc')
+
+    def test_mixed_complex_strings(self):
+            # A more complex string combining various types of characters
+            self.assertEqual(self.solution.flip_case('MiXeD-cAsE_sTrInG 123!@# ÅÄÖüß 😊'), 'mIxEd-CaSe_StRiNg 123!@# åäöÜSS 😊')
+            # String starting and ending with non-alphabetic characters
+            self.assertEqual(self.solution.flip_case('!_PyThOn_!'), '!_pYtHoN_!')

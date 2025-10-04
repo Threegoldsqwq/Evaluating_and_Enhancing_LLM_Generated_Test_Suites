@@ -41,3 +41,7 @@ class TestCheckDictCase(unittest.TestCase):
     def test_keys_with_mixed_internal_casing(self):
         # Keys are strings but contain both lower and upper case characters, not purely one or the other. Should return False.
         self.assertFalse(check_dict_case({"myKey":"value1", "anotherKey":"value2"}))
+    def test_empty_dictionary(self):
+            # Covers line 1 (if not dict_obj: return False) - True branch
+            # The function explicitly states: "The function should return False is the given dictionary is empty."
+            self.assertFalse(check_dict_case({}))

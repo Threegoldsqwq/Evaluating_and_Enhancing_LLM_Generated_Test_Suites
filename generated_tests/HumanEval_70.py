@@ -47,6 +47,45 @@ class TestStrangeSortList(unittest.TestCase):
         # Sorted: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] -> Output: [1, 10, 2, 9, 3, 8, 4, 7, 5, 6]
         self.assertEqual(strange_sort_list([10, 1, 9, 2, 8, 3, 7, 4, 6, 5]), [1, 10, 2, 9, 3, 8, 4, 7, 5, 6])
 
+    def test_single_element_list(self):
+            """Test with lists containing a single element."""
+            self.assertEqual(strange_sort_list([42]), [42])
+            self.assertEqual(strange_sort_list([0]), [0])
+            self.assertEqual(strange_sort_list([-5]), [-5])
+
+    def test_odd_length_lists(self):
+            """Test with odd-length lists (more than one element)."""
+            self.assertEqual(strange_sort_list([1, 2, 3]), [1, 3, 2])
+            self.assertEqual(strange_sort_list([10, 5, 20]), [5, 20, 10])
+            self.assertEqual(strange_sort_list([-3, 0, 3]), [-3, 3, 0])
+            self.assertEqual(strange_sort_list([100, 1, 50, 5, 10]), [1, 100, 5, 50, 10])
+
+    def test_lists_with_negative_and_zero(self):
+            """Test with lists containing negative numbers and zero."""
+            # Even length, all negative
+            self.assertEqual(strange_sort_list([-1, -2, -3, -4]), [-4, -1, -3, -2])
+            # Odd length, all negative
+            self.assertEqual(strange_sort_list([-1, -2, -3]), [-3, -1, -2])
+            # Mixed positive, negative, zero, odd length
+            self.assertEqual(strange_sort_list([-5, 0, 5, -1, 1]), [-5, 5, -1, 1, 0])
+            # Mixed positive, negative, zero, even length
+            self.assertEqual(strange_sort_list([-2, 0, 2, -1, 1, -3]), [-3, 2, -2, 1, -1, 0])
+
+    def test_lists_with_duplicates_odd_length(self):
+            """Test with odd-length lists containing duplicate elements."""
+            self.assertEqual(strange_sort_list([7, 7, 7]), [7, 7, 7])
+            self.assertEqual(strange_sort_list([1, 1, 2, 2, 2]), [1, 2, 1, 2, 2])
+            self.assertEqual(strange_sort_list([0, 0, 0, 0, 0]), [0, 0, 0, 0, 0])
+
+    def test_longer_lists(self):
+            """Test with longer lists to ensure scalability and correct logic over many iterations."""
+            long_list_even = list(range(1, 11))  # [1, 2, ..., 10]
+            expected_even = [1, 10, 2, 9, 3, 8, 4, 7, 5, 6]
+            self.assertEqual(strange_sort_list(long_list_even), expected_even)
+
+            long_list_odd = list(range(1, 10))  # [1, 2, ..., 9]
+            expected_odd = [1, 9, 2, 8, 3, 7, 4, 6, 5]
+            self.assertEqual(strange_sort_list(long_list_odd), expected_odd)
 # To run these tests, you would typically have the strange_sort_list function defined.
 # For example:
 # def strange_sort_list(integers: list) -> list:

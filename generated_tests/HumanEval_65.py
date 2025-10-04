@@ -60,3 +60,26 @@ class TestCircularShift(unittest.TestCase):
     def test_longer_number_multiple_shifts(self):
         # Test a longer number with a shift less than its length
         self.assertEqual(circular_shift(12345, 2), "45123")
+    def test_zero_shift_value(self):
+            # Test cases where shift is explicitly zero, which should result in no change
+            self.assertEqual(circular_shift(12345, 0), "12345")
+            self.assertEqual(circular_shift(0, 0), "0")
+            self.assertEqual(circular_shift(5, 0), "5")
+            self.assertEqual(circular_shift(-123, 0), "-123")
+
+    def test_negative_integer_x(self):
+            # Test cases with negative integers for x. The '-' sign is treated as a character.
+            self.assertEqual(circular_shift(-12, 1), "2-1") # num_digits for "-12" is 3
+            self.assertEqual(circular_shift(-12, 2), "12-") # Shifted two times
+            self.assertEqual(circular_shift(-12, 3), "-12") # Full rotation
+            self.assertEqual(circular_shift(-12, 4), "21-") # shift > num_digits, reversed ("-12"[::-1])
+            self.assertEqual(circular_shift(-5, 1), "-5")  # Single negative digit
+            self.assertEqual(circular_shift(-5, 2), "-5")  # Single negative digit, shift > num_digits
+
+    def test_large_number_large_shift_edge_cases(self):
+            # Test with a large number and various shifts, including edge cases for > num_digits
+            self.assertEqual(circular_shift(9876543210, 1), "0987654321") # 10 digits
+            self.assertEqual(circular_shift(9876543210, 10), "9876543210") # Full rotation
+            self.assertEqual(circular_shift(9876543210, 11), "0123456789") # shift > num_digits, reversed
+            self.assertEqual(circular_shift(9876543210, 20), "9876543210") # Shift is multiple of num_digits
+            self.assertEqual(circular_shift(9876543210, 21), "0123456789") # shift > num_digits, reversed

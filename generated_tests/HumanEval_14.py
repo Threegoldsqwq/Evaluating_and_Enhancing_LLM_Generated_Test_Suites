@@ -45,5 +45,19 @@ class TestAllPrefixes(unittest.TestCase):
 
     def test_unicode_string(self):
         # Test case for a string with Unicode characters
-        expected = ['é', 'él', 'éle', 'élem', 'élemr', 'élemér']
+        # The original expected list had a typo at the 5th element ('élemr' instead of 'élemé').
+        # Corrected the expected list to match the actual prefixes of 'élemér'.
+        expected = ['é', 'él', 'éle', 'élem', 'élemé', 'élemér']
         self.assertEqual(all_prefixes('élemér'), expected)
+
+    def test_string_with_spaces(self):
+            self.assertEqual(self.solution('hello world'), ['h', 'he', 'hel', 'hell', 'hello', 'hello ', 'hello w', 'hello wo', 'hello wor', 'hello worl', 'hello world'])
+
+    def test_string_with_special_characters(self):
+            self.assertEqual(self.solution('!@#$%'), ['!', '!@', '!@#', '!@#$', '!@#$%'])
+
+    def test_string_with_numbers(self):
+            self.assertEqual(self.solution('12345'), ['1', '12', '123', '1234', '12345'])
+
+    def test_unicode_string(self):
+            self.assertEqual(self.solution('你好世界'), ['你', '你好', '你好世', '你好世界'])

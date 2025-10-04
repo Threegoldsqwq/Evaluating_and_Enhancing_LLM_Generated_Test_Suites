@@ -63,5 +63,59 @@ class TestGetClosestVowel(unittest.TestCase):
         # 'u' is the rightmost vowel surrounded by consonants ('f' and 'l')
         self.assertEqual(get_closest_vowel("beautiful"), "u")
 
+    def test_empty_string(self):
+            # Covers the case where len(word) < 3, preventing the main loop from executing.
+            self.assertEqual(get_closest_vowel(""), "")
+
+    def test_short_strings_no_loop(self):
+            # Covers cases where len(word) < 3 (length 1 and 2), preventing the main loop from executing.
+            self.assertEqual(get_closest_vowel("a"), "")
+            self.assertEqual(get_closest_vowel("b"), "")
+            self.assertEqual(get_closest_vowel("ae"), "")
+            self.assertEqual(get_closest_vowel("ba"), "")
+            self.assertEqual(get_closest_vowel("bb"), "")
+
+    def test_no_vowels_in_word(self):
+            # Covers words containing no English vowels, ensuring the loop completes and returns empty string.
+            self.assertEqual(get_closest_vowel("rhythm"), "")
+            self.assertEqual(get_closest_vowel("fly"), "")
+            self.assertEqual(get_closest_vowel("crypts"), "")
+
+    def test_vowels_at_boundaries_only(self):
+            # Vowels are present, but only at the beginning or end, or such that they are not between consonants.
+            # These cases prevent the inner conditions from being met.
+            self.assertEqual(get_closest_vowel("apple"), "") # 'a' at start, 'e' at end
+            self.assertEqual(get_closest_vowel("idea"), "")  # 'i' at start, 'a' at end
+            self.assertEqual(get_closest_vowel("aeiou"), "") # Vowels are always next to other vowels
+            self.assertEqual(get_closest_vowel("coala"), "") # 'o' is between 'c' and 'a' (vowel), 'a' is between 'o' (vowel) and 'l'
+
+    def test_vowel_at_smallest_valid_index(self):
+            # Tests when the closest vowel from the right is at the smallest possible index (i=1).
+            self.assertEqual(get_closest_vowel("bab"), "a")
+            self.assertEqual(get_closest_vowel("xey"), "e")
+            self.assertEqual(get_closest_vowel("fic"), "i")
+
+    def test_vowel_at_largest_valid_index(self):
+            # Tests when the closest vowel from the right is at the largest possible index (len(word)-2).
+            self.assertEqual(get_closest_vowel("cabac"), "a") # 'a' at index 3 (len-2) between 'b' and 'c'
+            self.assertEqual(get_closest_vowel("opener"), "e") # 'e' at index 4 (len-2) between 'n' and 'r'
+
+    def test_multiple_valid_vowels_rightmost_priority(self):
+            # Ensures that the function correctly picks the rightmost valid vowel.
+            self.assertEqual(get_closest_vowel("banana"), "a") # 'a' at index 4 ('n'a'n') should be chosen over 'a' at index 2
+            self.assertEqual(get_closest_vowel("catamaran"), "a") # 'a' at index 7 ('r'a'n') over 'a' at index 5 ('m'a'r')
+            self.assertEqual(get_closest_vowel("celebration"), "a") # 'a' at index 7 ('r'a't') over 'e' at index 2 ('c'e'l') or 'i' at index 5 ('b'i'l')
+
+    def test_case_sensitivity_vowels_and_consonants(self):
+            # Tests with a mix of uppercase and lowercase characters.
+            self.assertEqual(get_closest_vowel("bAc"), "A")
+            self.assertEqual(get_closest_vowel("BYAYZ"), "A")
+            self.assertEqual(get_closest_vowel("bAnAnA"), "A")
+            self.assertEqual(get_closest_vowel("sChOOl"), "") # 'O' at index 3 is between 'h' and 'O' (vowel), so no match.
+
+    def test_complex_words_no_match(self):
+            # Words where the loop runs extensively but no valid vowel is found.
+            self.assertEqual(get_closest_vowel("aquarium"), "") # All vowels either at boundary or next to other vowels
+            self.assertEqual(get_closest_vowel("scrooge"), "") # Vowels are 'o', 'o', 'o', 'e'. 'o' at 3 between 'r' and 'o' (vowel).
 if __name__ == '__main__':
     unittest.main()

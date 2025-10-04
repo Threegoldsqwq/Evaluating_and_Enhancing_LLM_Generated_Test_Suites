@@ -100,3 +100,62 @@ class TestGradeEquation(unittest.TestCase):
         input_gpas = [2.5, 0.5, 3.2, 1.5, 3.95, 0.9, 1.9, 2.9, 0.0, 4.0]
         expected_grades = ['B-', 'D-', 'B+', 'C-', 'A', 'D', 'C', 'B', 'E', 'A+']
         self.assertEqual(grade_equation(input_gpas), expected_grades)
+    def test_grade_equation_empty_list(self):
+            """
+            Test with an empty list of GPAs to ensure it returns an empty list
+            and handles the no-loop case correctly. This helps cover function entry and exit.
+            """
+            self.assertEqual(grade_equation([]), [])
+
+    def test_grade_equation_all_grade_boundaries(self):
+            """
+            Test all grade boundaries explicitly. This includes values that fall exactly
+            on a lower boundary (e.g., 3.7 for A-) and values just above a boundary
+            (e.g., 3.71 for A) to ensure all comparison operators (==, >) are correctly
+            exercised for each grade threshold.
+            """
+            # Test values that exactly match a lower boundary, which should fall into the *next* grade category.
+            # e.g., 3.7 is not > 3.7, so it goes to the next elif.
+            self.assertEqual(grade_equation([3.7]), ['A-'])
+            self.assertEqual(grade_equation([3.3]), ['B+'])
+            self.assertEqual(grade_equation([3.0]), ['B'])
+            self.assertEqual(grade_equation([2.7]), ['B-'])
+            self.assertEqual(grade_equation([2.3]), ['C+'])
+            self.assertEqual(grade_equation([2.0]), ['C'])
+            self.assertEqual(grade_equation([1.7]), ['C-'])
+            self.assertEqual(grade_equation([1.3]), ['D+'])
+            self.assertEqual(grade_equation([1.0]), ['D'])
+            self.assertEqual(grade_equation([0.7]), ['D-'])
+            self.assertEqual(grade_equation([0.0]), ['E']) # Specific check for gpa == 0.0
+
+            # Test values slightly above a boundary, which should fall into the *current* grade category.
+            # e.g., 3.71 is > 3.7, so it's 'A'.
+            self.assertEqual(grade_equation([4.0]), ['A+']) # Exact 4.0 for A+
+            self.assertEqual(grade_equation([3.71]), ['A'])
+            self.assertEqual(grade_equation([3.31]), ['A-'])
+            self.assertEqual(grade_equation([3.01]), ['B+'])
+            self.assertEqual(grade_equation([2.71]), ['B'])
+            self.assertEqual(grade_equation([2.31]), ['B-'])
+            self.assertEqual(grade_equation([2.01]), ['C+'])
+            self.assertEqual(grade_equation([1.71]), ['C'])
+            self.assertEqual(grade_equation([1.31]), ['C-'])
+            self.assertEqual(grade_equation([1.01]), ['D+'])
+            self.assertEqual(grade_equation([0.71]), ['D'])
+            self.assertEqual(grade_equation([0.01]), ['D-']) # Just above 0.0
+
+    def test_grade_equation_negative_gpas(self):
+            """
+            Test cases with negative GPAs to ensure the final 'else' block is covered.
+            """
+            self.assertEqual(grade_equation([-0.1]), ['E'])
+            self.assertEqual(grade_equation([-5.0]), ['E'])
+            self.assertEqual(grade_equation([-100.0]), ['E'])
+
+    def test_grade_equation_mixed_gpas_scenario(self):
+            """
+            Test a diverse list of GPAs, covering multiple grade categories and
+            edge cases (4.0, 0.0, negative) in a single call to ensure robustness.
+            """
+            gpas_input = [4.0, 3.9, 3.7, 3.4, 3.0, 2.8, 2.3, 2.1, 1.7, 1.4, 1.0, 0.8, 0.5, 0.0, -1.0, 3.75]
+            expected_grades = ['A+', 'A', 'A-', 'A-', 'B', 'B', 'C+', 'C+', 'C-', 'C-', 'D', 'D', 'D-', 'E', 'E', 'A']
+            self.assertEqual(grade_equation(gpas_input), expected_grades)

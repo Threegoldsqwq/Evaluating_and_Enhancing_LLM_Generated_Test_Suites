@@ -42,6 +42,26 @@ class TestFilterIntegers(unittest.TestCase):
         # Test with very large integers
         self.assertEqual(filter_integers([10**100, 'small', -10**50, 0.5, 999999999999999]), [10**100, -10**50, 999999999999999])
 
+    def test_filter_includes_booleans(self):
+            # Python's bool is a subclass of int, so True and False should be included.
+            self.assertEqual(self.solution.filter_integers([True, False, 1, 'text', 0, 3.14]), [True, False, 1, 0])
+            self.assertEqual(self.solution.filter_integers([True, False]), [True, False])
+            self.assertEqual(self.solution.filter_integers(['a', True, 3.14, False, 5]), [True, False, 5])
+
+    def test_filter_large_and_negative_integers(self):
+            # Test with very large integers, including positive and negative ones.
+            self.assertEqual(self.solution.filter_integers([10**100, -5, 0, -10**100, 'big int']), [10**100, -5, 0, -10**100])
+            self.assertEqual(self.solution.filter_integers([-1, 99999999999999999999999999999999999999999]), [-1, 99999999999999999999999999999999999999999])
+
+    def test_filter_excludes_non_integer_numbers(self):
+            # Ensure floats, complex numbers, and zero-point-zero are not included.
+            self.assertEqual(self.solution.filter_integers([1.0, -2.5, 5j, 0.0, 1/2]), [])
+            self.assertEqual(self.solution.filter_integers([1, 3.14, 2j, 4.0, 'a']), [1])
+
+    def test_filter_excludes_various_non_numeric_types(self):
+            # Test with a wide variety of non-integer, non-numeric types.
+            self.assertEqual(self.solution.filter_integers([None, 'hello', [], {}, (), object(), b'bytes', type]), [])
+            self.assertEqual(self.solution.filter_integers([1, None, 'string', 2.5, True, [], 3]), [1, True, 3])
 # Note: The 'filter_integers' function is assumed to exist for these tests to run.
 # For example, a basic implementation could be:
 # def filter_integers(values):

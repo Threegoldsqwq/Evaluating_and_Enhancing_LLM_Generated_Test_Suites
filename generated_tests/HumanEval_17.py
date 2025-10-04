@@ -37,3 +37,23 @@ class TestParseMusic(unittest.TestCase):
 
     def test_long_mixed_sequence(self):
         self.assertEqual(parse_music('.| o o| .| o o| .| o o|'), [1, 4, 2, 1, 4, 2, 1, 4, 2])
+    def test_unrecognized_notes(self):
+            # Test case to cover line 58 (the 'else' branch for unrecognized notes)
+            # Input contains an unrecognized note 'x'
+            self.assertEqual(self.solution.parse_music('o x .|'), [4, 1])
+            # Input contains only unrecognized notes
+            self.assertEqual(self.solution.parse_music('x y z'), [])
+            # Input contains an unrecognized note amidst valid ones at different positions
+            self.assertEqual(self.solution.parse_music('.| UNKNOWN o|'), [1, 2])
+            self.assertEqual(self.solution.parse_music('o| invalid .| o'), [2, 1, 4])
+
+    def test_edge_cases_with_spaces(self):
+            # Test with leading/trailing spaces and multiple spaces between notes
+            self.assertEqual(self.solution.parse_music('  o   o|  .|   '), [4, 2, 1])
+            self.assertEqual(self.solution.parse_music(' o '), [4])
+            self.assertEqual(self.solution.parse_music('     '), []) # String with only spaces
+
+    def test_empty_string_explicitly(self):
+            # Explicitly test the empty string case (if not already thoroughly covered)
+            # This covers the 'if not music_string:' branch
+            self.assertEqual(self.solution.parse_music(''), [])

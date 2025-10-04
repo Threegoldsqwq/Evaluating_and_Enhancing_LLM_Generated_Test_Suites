@@ -102,6 +102,123 @@ class TestValidDate(unittest.TestCase):
     #     self.assertFalse(valid_date('03-YY-2000'))
     #     self.assertFalse(valid_date('03-11-ZZZZ'))
 
+    def test_invalid_length_too_short(self):
+            """Test with date string shorter than 10 characters."""
+            self.assertFalse(valid_date("01-01-202"))  # Length 9
+
+    def test_invalid_length_too_long(self):
+            """Test with date string longer than 10 characters."""
+            self.assertFalse(valid_date("01-01-20200")) # Length 11
+            self.assertFalse(valid_date("01-01-2020-")) # Length 11
+
+    def test_invalid_first_separator(self):
+            """Test with an incorrect character at the first hyphen position."""
+            self.assertFalse(valid_date("01/01-2020"))
+            self.assertFalse(valid_date("01x01-2020"))
+
+    def test_invalid_second_separator(self):
+            """Test with an incorrect character at the second hyphen position."""
+            self.assertFalse(valid_date("01-01/2020"))
+            self.assertFalse(valid_date("01-01x2020"))
+
+    def test_invalid_both_separators(self):
+            """Test with incorrect characters at both hyphen positions."""
+            self.assertFalse(valid_date("01/01/2020"))
+            self.assertFalse(valid_date("01.01.2020"))
+
+    def test_valid_date_to_cover_parts_check(self):
+            """
+            Test a valid date to ensure the 'if len(parts) != 3:' line is executed.
+            (The 'True' branch for len(parts) != 3 is logically unreachable given prior checks).
+            """
+            self.assertTrue(valid_date("12-25-2023"))
+
+    def test_invalid_month_not_digits(self):
+            """Test with non-digit characters in the month part."""
+            self.assertFalse(valid_date("ab-01-2020"))
+            self.assertFalse(valid_date("0a-01-2020"))
+
+    def test_invalid_month_length_one(self):
+            """Test with a single digit for the month part."""
+            self.assertFalse(valid_date("1-01-2020"))
+
+    def test_invalid_month_length_three(self):
+            """Test with three digits for the month part."""
+            self.assertFalse(valid_date("001-01-2020"))
+
+    def test_invalid_day_not_digits(self):
+            """Test with non-digit characters in the day part."""
+            self.assertFalse(valid_date("01-ab-2020"))
+            self.assertFalse(valid_date("01-0a-2020"))
+
+    def test_invalid_day_length_one(self):
+            """Test with a single digit for the day part."""
+            self.assertFalse(valid_date("01-1-2020"))
+
+    def test_invalid_day_length_three(self):
+            """Test with three digits for the day part."""
+            self.assertFalse(valid_date("01-001-2020"))
+
+    def test_invalid_year_not_digits(self):
+            """Test with non-digit characters in the year part."""
+            self.assertFalse(valid_date("01-01-abcd"))
+            self.assertFalse(valid_date("01-01-202a"))
+
+    def test_invalid_year_length_three(self):
+            """Test with three digits for the year part."""
+            self.assertFalse(valid_date("01-01-202"))
+
+    def test_invalid_year_length_five(self):
+            """Test with five digits for the year part."""
+            self.assertFalse(valid_date("01-01-20200"))
+
+    def test_unicode_digits_fail_int_conversion(self):
+            """
+            Test for cases where isdigit() passes but int() conversion fails (e.g., unicode digits).
+            This targets the 'except ValueError' block.
+            """
+            # Superscript digits are `isdigit()` true but `int()` conversion fails.
+            self.assertFalse(valid_date("\u00B2\u00B3-\u00B0\u00B1-2020")) # Month '²³', Day '⁰¹'
+            self.assertFalse(valid_date("01-01-\u00B2\u00B0\u00B2\u00B0")) # Year '²⁰²⁰'
+
+    def test_invalid_month_zero(self):
+            """Test with month 00, which is less than 1."""
+            self.assertFalse(valid_date("00-01-2020"))
+
+    def test_invalid_month_thirteen(self):
+            """Test with month 13, which is greater than 12."""
+            self.assertFalse(valid_date("13-01-2020"))
+
+    def test_invalid_day_zero(self):
+            """Test with day 00, which is less than 1."""
+            self.assertFalse(valid_date("01-00-2020"))
+
+    def test_invalid_day_too_many_31_day_month(self):
+            """Test with more than 31 days for a 31-day month."""
+            self.assertFalse(valid_date("01-32-2020")) # January
+            self.assertFalse(valid_date("03-32-2020")) # March
+
+    def test_invalid_day_too_many_30_day_month(self):
+            """Test with more than 30 days for a 30-day month."""
+            self.assertFalse(valid_date("04-31-2020")) # April
+            self.assertFalse(valid_date("06-31-2020")) # June
+
+    def test_invalid_day_february_too_many(self):
+            """Test with more than 29 days for February."""
+            self.assertFalse(valid_date("02-30-2020"))
+            self.assertFalse(valid_date("02-31-2020"))
+
+    def test_valid_february_max_day(self):
+            """Test valid max day for February (29)."""
+            self.assertTrue(valid_date("02-29-2020"))
+
+    def test_valid_date_31_day_month_edge_case(self):
+            """Test a valid date with max days in a 31-day month."""
+            self.assertTrue(valid_date("07-31-2023")) # July
+
+    def test_valid_date_30_day_month_edge_case(self):
+            """Test a valid date with max days in a 30-day month."""
+            self.assertTrue(valid_date("09-30-2023")) # September
 if __name__ == '__main__':
     # This is a placeholder for the actual function.
     # In a real setup, `valid_date` would be imported.

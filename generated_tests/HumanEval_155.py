@@ -41,3 +41,42 @@ class TestEvenOddCount(unittest.TestCase):
     def test_large_mixed_number(self):
         # A larger number with a mix of even and odd digits
         self.assertEqual(even_odd_count(9876543210), (5, 5))
+    def test_all_even_digits_positive(self):
+            # Test a positive number with all even digits
+            self.assertEqual(even_odd_count(246), (3, 0))
+
+    def test_all_odd_digits_positive(self):
+            # Test a positive number with all odd digits
+            self.assertEqual(even_odd_count(135), (0, 3))
+
+    def test_mixed_digits_positive(self):
+            # Test a positive number with a mix of even and odd digits
+            self.assertEqual(even_odd_count(12345), (2, 3))
+
+    def test_zero(self):
+            # Test the number zero (single even digit)
+            self.assertEqual(even_odd_count(0), (1, 0))
+
+    def test_single_even_digit(self):
+            # Test a single even digit
+            self.assertEqual(even_odd_count(4), (1, 0))
+
+    def test_single_odd_digit(self):
+            # Test a single odd digit
+            self.assertEqual(even_odd_count(7), (0, 1))
+
+    def test_negative_all_even_digits(self):
+            # Test a negative number with all even digits
+            self.assertEqual(even_odd_count(-246), (3, 0))
+
+    def test_negative_all_odd_digits(self):
+            # Test a negative number with all odd digits
+            self.assertEqual(even_odd_count(-135), (0, 3))
+
+    def test_negative_mixed_digits(self):
+            # Test a negative number with a mix of even and odd digits
+            self.assertEqual(even_odd_count(-12345), (2, 3))
+
+    def test_large_number(self):
+            # Test a large number with mixed digits to ensure scalability
+            self.assertEqual(even_odd_count(9876543210), (5, 5))

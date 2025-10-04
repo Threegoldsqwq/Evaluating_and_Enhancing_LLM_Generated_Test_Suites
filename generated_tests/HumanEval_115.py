@@ -108,6 +108,90 @@ class TestEmptyWells(unittest.TestCase):
         # Total: 100 + 50 + 80 = 230
         self.assertEqual(empty_wells(grid, bucket_capacity), 230)
 
+    def test_empty_grid(self):
+            # Test case for an empty grid, expecting 0 total lowerings.
+            # Ensures the loop handles an empty iterable correctly.
+            grid = []
+            bucket_capacity = 5
+            self.assertEqual(empty_wells(grid, bucket_capacity), 0)
+
+    def test_grid_with_only_empty_wells(self):
+            # Test case for a grid containing only empty wells.
+            # This covers the 'if water_in_well > 0:' condition evaluating to False
+            # for all wells, ensuring no lowerings are counted.
+            grid = [[0, 0], [], [0, 0, 0]]
+            bucket_capacity = 3
+            self.assertEqual(empty_wells(grid, bucket_capacity), 0)
+
+    def test_mixed_empty_and_non_empty_wells(self):
+            # Test case with a mix of empty and non-empty wells.
+            # This ensures both branches of 'if water_in_well > 0:' are exercised.
+            # Also tests different water amounts and bucket capacities.
+            grid = [
+                [1, 0, 1],       # water_in_well = 2
+                [0, 0],          # water_in_well = 0
+                [1, 1, 1, 1]     # water_in_well = 4
+            ]
+            bucket_capacity = 3
+            # Well 1: 2 units, capacity 3 -> ceil(2/3) = 1 lowering
+            # Well 2: 0 units, capacity 3 -> 0 lowerings
+            # Well 3: 4 units, capacity 3 -> ceil(4/3) = 2 lowerings
+            # Total = 1 + 0 + 2 = 3
+            self.assertEqual(empty_wells(grid, bucket_capacity), 3)
+
+    def test_bucket_capacity_one(self):
+            # Test case where bucket capacity is 1, ensuring each unit of water
+            # requires a separate lowering.
+            grid = [
+                [1, 1],        # water_in_well = 2
+                [1, 0, 1, 1]   # water_in_well = 3
+            ]
+            bucket_capacity = 1
+            # Well 1: 2 units, capacity 1 -> ceil(2/1) = 2 lowerings
+            # Well 2: 3 units, capacity 1 -> ceil(3/1) = 3 lowerings
+            # Total = 2 + 3 = 5
+            self.assertEqual(empty_wells(grid, bucket_capacity), 5)
+
+    def test_large_bucket_capacity(self):
+            # Test case where bucket capacity is larger than water in any well.
+            # Each non-empty well should require exactly one lowering.
+            grid = [
+                [1],           # water_in_well = 1
+                [1, 1, 1],     # water_in_well = 3
+                [0,0,0,0,1,1]  # water_in_well = 2
+            ]
+            bucket_capacity = 10
+            # Well 1: 1 unit, capacity 10 -> ceil(1/10) = 1 lowering
+            # Well 2: 3 units, capacity 10 -> ceil(3/10) = 1 lowering
+            # Well 3: 2 units, capacity 10 -> ceil(2/10) = 1 lowering
+            # Total = 1 + 1 + 1 = 3
+            self.assertEqual(empty_wells(grid, bucket_capacity), 3)
+
+    def test_well_water_exactly_divisible_by_capacity(self):
+            # Test case where water_in_well is perfectly divisible by bucket_capacity,
+            # ensuring ceiling division behaves as expected (e.g., 6/2 = 3).
+            grid = [
+                [1,1,1,1,1,1], # water_in_well = 6
+                [1,1]          # water_in_well = 2
+            ]
+            bucket_capacity = 2
+            # Well 1: 6 units, capacity 2 -> ceil(6/2) = 3 lowerings
+            # Well 2: 2 units, capacity 2 -> ceil(2/2) = 1 lowering
+            # Total = 3 + 1 = 4
+            self.assertEqual(empty_wells(grid, bucket_capacity), 4)
+
+    def test_well_water_not_exactly_divisible_by_capacity(self):
+            # Test case where water_in_well is not perfectly divisible by bucket_capacity,
+            # ensuring ceiling division correctly rounds up (e.g., 5/2 = 2.5 rounds to 3).
+            grid = [
+                [1,1,1,1,1], # water_in_well = 5
+                [1,1,1,1]    # water_in_well = 4
+            ]
+            bucket_capacity = 2
+            # Well 1: 5 units, capacity 2 -> ceil(5/2) = 3 lowerings
+            # Well 2: 4 units, capacity 2 -> ceil(4/2) = 2 lowerings
+            # Total = 3 + 2 = 5
+            self.assertEqual(empty_wells(grid, bucket_capacity), 5)
 if __name__ == '__main__':
     # This is a placeholder for the actual function.
     # In a real scenario, this function would be imported or defined here.

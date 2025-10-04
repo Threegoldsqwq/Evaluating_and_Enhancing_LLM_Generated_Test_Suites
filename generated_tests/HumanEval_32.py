@@ -16,67 +16,214 @@ import unittest
 class TestEvaluatePolynomial(unittest.TestCase):
 
     def test_constant_polynomial(self):
-        # P(x) = 5
-        xs = [5]
-        x = 2
-        self.assertEqual(evaluate_polynomial(xs, x), 5)
-
+            # The `find_zero` function is designed for odd-degree polynomials,
+            # which means the list of coefficients `xs` must have an even length.
+            # A constant polynomial like P(x) = 5 (coefficients xs = [5])
+            # has degree 0, and its coefficient list has an odd length (1).
+            # Therefore, calling `find_zero` with `xs = [5]` should raise a ValueError
+            # due to the input constraints.
+            xs = [5]
+            with self.assertRaises(ValueError) as cm:
+                find_zero(xs)
+            self.assertIn("even number of elements", str(cm.exception))
     def test_linear_polynomial_at_zero(self):
-        # P(x) = 3 + 2x, at x=0
-        xs = [3, 2]
-        x = 0
-        self.assertEqual(evaluate_polynomial(xs, x), 3)
-
+            # For P(x) = 3 + 2x, the root (x where P(x)=0) is at x = -1.5
+            xs = [3, 2]
+            expected_root = -1.5
+            # The find_zero function calculates the root of the polynomial.
+            # We use assertAlmostEqual for float comparison due to numerical methods.
+            self.assertAlmostEqual(find_zero(xs), expected_root, places=7)
     def test_linear_polynomial_at_one(self):
-        # P(x) = 3 + 2x, at x=1
-        xs = [3, 2]
-        x = 1
-        self.assertEqual(evaluate_polynomial(xs, x), 5)
+            # For the polynomial P(x) = 3 + 2x, find_zero should return its root.
+            # The root is when 3 + 2x = 0, which means 2x = -3, so x = -1.5.
+            xs = [3, 2] # Represents P(x) = 3 + 2x
+            expected_root = -1.5
 
+            # Call the function under test: find_zero
+            actual_root = find_zero(xs)
+
+            # Assert that the returned root is approximately the expected value.
+            # Using assertAlmostEqual for float comparisons.
+            self.assertAlmostEqual(actual_root, expected_root, places=7) # Using a reasonable precision
     def test_quadratic_polynomial_positive_x(self):
-        # P(x) = 1 - 4x + x^2, at x=3
-        xs = [1, -4, 1]
-        x = 3
-        expected = 1 - 4*3 + 1*(3**2)  # 1 - 12 + 9 = -2
-        self.assertEqual(evaluate_polynomial(xs, x), expected)
+            # The function `find_zero` is designed to find roots for odd-degree polynomials.
+            # It explicitly requires the length of the coefficients list (degree + 1) to be an even number.
+            # A quadratic polynomial (degree 2) has 3 coefficients, meaning `len(xs)` is 3, which is an odd number.
+            # Therefore, calling `find_zero` with coefficients for a quadratic polynomial is expected to raise a ValueError,
+            # as it violates the function's input constraints.
+            xs = [1, -4, 1] # Coefficients for x^2 - 4x + 1 (a quadratic polynomial)
 
+            with self.assertRaisesRegex(ValueError, "Input coefficients list must be non-empty and have an even number of elements."):
+                find_zero(xs)
     def test_quadratic_polynomial_negative_x(self):
-        # P(x) = 1 - 4x + x^2, at x=-2
-        xs = [1, -4, 1]
-        x = -2
-        expected = 1 - 4*(-2) + 1*((-2)**2) # 1 + 8 + 4 = 13
-        self.assertEqual(evaluate_polynomial(xs, x), expected)
+                # The function `find_zero` requires an odd-degree polynomial,
+                # meaning the length of the coefficients list `xs` must be an even number.
+                # The original test attempted a quadratic polynomial (degree 2), which has
+                # an odd number of coefficients (length 3), violating `find_zero`'s constraint.
+                #
+                # We need to test `find_zero` with an odd-degree polynomial that has a negative root,
+                # and ideally only one real root, to ensure the bisection method converges to it.
+                # Let's use a cubic polynomial: P(x) = x^3 + 1
+                # This polynomial has one real root at x = -1.
+                # The coefficients are [constant, x^1, x^2, x^3] = [1, 0, 0, 1].
+                # Length of xs is 4 (even), so it satisfies `find_zero`'s input constraints.
 
+                xs = [1, 0, 0, 1]  # Coefficients for P(x) = x^3 + 1
+                expected_root = -1.0 # The single real root is -1.0
+
+                # `find_zero` returns a float, and internally uses a tolerance.
+                # `assertAlmostEqual` is appropriate for comparing float results.
+                # We use `places=7` to accommodate the internal tolerance of 1e-8.
+                self.assertAlmostEqual(find_zero(xs), expected_root, places=7)
     def test_cubic_polynomial_mixed_coefficients(self):
-        # P(x) = 2 - x + 0x^2 + 3x^3, at x=2
-        xs = [2, -1, 0, 3]
-        x = 2
-        expected = 2 - 1*2 + 0*(2**2) + 3*(2**3) # 2 - 2 + 0 + 24 = 24
-        self.assertEqual(evaluate_polynomial(xs, x), expected)
+            # P(x) = 2 - x + 0x^2 + 3x^3.
+            # We need to find a root for this polynomial, not evaluate it at a specific x.
+            # Let's check x = -1: P(-1) = 2 - (-1) + 0*(-1)^2 + 3*(-1)^3 = 2 + 1 + 0 - 3 = 0.
+            # So, x = -1 is a root for this polynomial.
+            xs = [2, -1, 0, 3]
+            expected_root = -1.0
 
+            # Call the function under test, which is find_zero, to find a root.
+            actual_root = find_zero(xs)
+
+            # Assert that the found root is almost equal to the expected root due to floating point precision.
+            self.assertAlmostEqual(actual_root, expected_root, delta=1e-5)
     def test_all_zero_coefficients(self):
-        # P(x) = 0 + 0x + 0x^2, at any x
-        xs = [0, 0, 0]
-        x = 5
-        self.assertEqual(evaluate_polynomial(xs, x), 0)
-
+            # The input xs = [0, 0, 0] has an odd number of coefficients (3).
+            # The function `find_zero` explicitly raises a ValueError if `len(xs)` is not an even number.
+            # Therefore, this test should assert that a ValueError is raised for this input.
+            xs = [0, 0, 0]
+            with self.assertRaises(ValueError):
+                find_zero(xs)
     def test_polynomial_with_float_x(self):
-        # P(x) = x + x^2, at x=0.5
-        xs = [0, 1, 1]
-        x = 0.5
-        expected = 0 + 1*0.5 + 1*(0.5**2) # 0.5 + 0.25 = 0.75
-        self.assertAlmostEqual(evaluate_polynomial(xs, x), expected)
+            # The function under test is 'find_zero'.
+            # 'find_zero' expects a polynomial with an even number of coefficients
+            # and returns a root, not an evaluation.
 
+            # P(x) = 1 + 2x, which has coefficients [1, 2].
+            # The length of xs (2) is even, satisfying the constraint for find_zero.
+            # The root for 1 + 2x = 0 is x = -0.5.
+
+            xs = [1, 2]
+            expected_root = -0.5
+
+            # Call the actual function under test, which is 'find_zero'.
+            actual_root = find_zero(xs)
+
+            # Assert that the found root is almost equal to the expected root.
+            # find_zero uses a tolerance of 1e-8.
+            self.assertAlmostEqual(actual_root, expected_root, places=7)
     def test_higher_degree_at_one(self):
-        # P(x) = 1 + 2x + 3x^2 + 4x^3 + 5x^4, at x=1 (sum of coefficients)
-        xs = [1, 2, 3, 4, 5]
-        x = 1
-        expected = 1 + 2 + 3 + 4 + 5 # 15
-        self.assertEqual(evaluate_polynomial(xs, x), expected)
+                # The function under test, find_zero, is designed to find roots of polynomials.
+                # It requires the polynomial to be of odd degree (i.e., an even number of coefficients).
+                # P(x) = (x - 1)^3 = x^3 - 3x^2 + 3x - 1 is an odd-degree polynomial (degree 3).
+                # This polynomial has a single real root at x=1.
+                # Coefficients are [a0, a1, a2, a3] where a0 is the constant term.
+                xs = [-1, 3, -3, 1] # Corresponds to x^3 - 3x^2 + 3x - 1
+                expected_root = 1.0
 
+                # Call find_zero to find a root of the polynomial
+                actual_root = find_zero(xs)
+
+                # Use assertAlmostEqual for float comparisons, considering the internal tolerance
+                self.assertAlmostEqual(actual_root, expected_root, places=6)
     def test_higher_degree_at_negative_one(self):
-        # P(x) = 1 + 2x + 3x^2 + 4x^3 + 5x^4, at x=-1
-        xs = [1, 2, 3, 4, 5]
-        x = -1
-        expected = 1 + 2*(-1) + 3*((-1)**2) + 4*((-1)**3) + 5*((-1)**4) # 1 - 2 + 3 - 4 + 5 = 3
-        self.assertEqual(evaluate_polynomial(xs, x), expected)
+            # P(x) = x^3 + x^2 + x + 1, which has a root at x = -1.
+            # This polynomial is (x+1)(x^2+1).
+            # Coefficients [a0, a1, a2, a3] are [1, 1, 1, 1].
+            # The length of xs (4) is even, satisfying the function's constraint.
+            xs = [1, 1, 1, 1]
+            expected_root = -1.0
+
+            # The function under test, find_zero, finds a root, not evaluates a polynomial.
+            # Use assertAlmostEqual for floating point comparison of the root.
+            self.assertAlmostEqual(find_zero(xs), expected_root, delta=1e-6)
+
+    def test_evaluate_poly_horner_empty_coefficients(self):
+            """
+            Covers _evaluate_poly_horner line 21: `if not xs: return 0.0`
+            """
+            self.assertEqual(_evaluate_poly_horner([], 5.0), 0.0)
+            self.assertEqual(_evaluate_poly_horner([], 0.0), 0.0)
+            self.assertEqual(_evaluate_poly_horner([], -100.0), 0.0)
+
+    def test_find_zero_invalid_input_empty_list(self):
+            """
+            Covers find_zero line 46: `if not xs` branch leading to ValueError.
+            """
+            with self.assertRaisesRegex(ValueError, "Input coefficients list must be non-empty and have an even number of elements."):
+                find_zero([])
+
+    def test_find_zero_invalid_input_odd_number_of_coefficients(self):
+            """
+            Covers find_zero line 46: `len(xs) % 2 != 0` branch leading to ValueError.
+            """
+            with self.assertRaisesRegex(ValueError, "Input coefficients list must be non-empty and have an even number of elements."):
+                find_zero([1])  # Degree 0, 1 coefficient
+            with self.assertRaisesRegex(ValueError, "Input coefficients list must be non-empty and have an even number of elements."):
+                find_zero([1, 2, 3])  # Degree 2, 3 coefficients
+
+    def test_find_zero_initial_a_is_root(self):
+            """
+            Covers find_zero line 59: `if abs(fa) < tolerance: return a`
+            Tests a linear polynomial f(x) = x + 10, where root is -10.0 (initial 'a' bound).
+            """
+            result = find_zero([10, 1])
+            self.assertAlmostEqual(result, -10.0, places=7)
+
+    def test_find_zero_initial_b_is_root(self):
+            """
+            Covers find_zero line 61: `if abs(fb) < tolerance: return b`
+            Tests a linear polynomial f(x) = x - 10, where root is 10.0 (initial 'b' bound).
+            """
+            result = find_zero([-10, 1])
+            self.assertAlmostEqual(result, 10.0, places=7)
+
+    def test_find_zero_root_at_expanded_a(self):
+            """
+            Covers find_zero lines 81 (`if abs(fa) < tolerance`), 91 (`if abs(fa) < tolerance`), and 92 (`return a`).
+            Root is -40.0. Initial bounds [-10, 10] expand to [-20, 20], then to [-40, 40],
+            at which point f(-40) = 0.
+            Polynomial: f(x) = x + 40 => coefficients [40, 1]
+            """
+            result = find_zero([40, 1])
+            self.assertAlmostEqual(result, -40.0, places=7)
+
+    def test_find_zero_root_at_expanded_b(self):
+            """
+            Covers find_zero lines 83 (`if abs(fb) < tolerance`), 93 (`if abs(fb) < tolerance`), and 94 (`return b`).
+            Root is 40.0. Initial bounds [-10, 10] expand to [-20, 20], then to [-40, 40],
+            at which point f(40) = 0.
+            Polynomial: f(x) = x - 40 => coefficients [-40, 1]
+            """
+            result = find_zero([-40, 1])
+            self.assertAlmostEqual(result, 40.0, places=7)
+
+    def test_find_zero_very_large_root_raises_exception(self):
+            """
+            Covers find_zero lines 97 (`if abs(b - a) > range_expansion_limit`) and 98 (`raise Exception`).
+            Tests a polynomial f(x) = x - 1e20, whose root (1e20) is beyond the range expansion limit.
+            """
+            with self.assertRaisesRegex(Exception, "Could not find a bracketing interval for the root within reasonable bounds."):
+                find_zero([-1e20, 1.0])
+
+    def test_find_zero_max_iterations_reached(self):
+            """
+            Covers find_zero line 128: `return (a + b) / 2.0` (when max_iterations is reached).
+            Tests f(x) = x^3 - 0.5, an irrational root that will likely exhaust max_iterations before
+            hitting exact tolerance, returning the best estimate midpoint.
+            Also implicitly covers lines 104 (for loop) and 105 (c = (a + b) / 2.0).
+            """
+            result = find_zero([-0.5, 0, 0, 1])
+            expected_root = pow(0.5, 1/3.0)
+            self.assertAlmostEqual(result, expected_root, places=7)
+
+    def test_find_zero_multiple_roots_converges_to_one(self):
+            """
+            Tests an odd-degree polynomial with multiple real roots to ensure bisection
+            finds one of them and converges.
+            Polynomial: f(x) = x^3 - 7x + 6 = (x-1)(x-2)(x+3)
+            Roots are -3, 1, 2. Bisection starting [-10, 10] will typically converge to -3.
+            """
+            result = find_zero([6, -7, 0, 1])
+            self.assertAlmostEqual(result, -3.0, places=7)
