@@ -3,7 +3,7 @@ Hello \o/, welcome to the experiment on using LLM to generate and improve test s
 
 Here are the explanations of files inside this repository:
 
-**test_generation.ipynb:** the file for part 1 (generating test cases and evaluating it). You can run the experiment, but don't forget to change the path when you run the code.
+**test_generation.ipynb:** the file for part 1 (generating test cases and evaluating it). You can run the experiment, but don't forget to change the path when you run the code. \\
 **iterative_enhancement.ipynb:** the file for generating solutions, fixing the tests and enhancing them. You can run the experiment, but don't forget to change the path when you run the code.
 
 **canonical_solutions:** store canonical solutions (ground truth) got from HumanEval dataset.
